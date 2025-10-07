@@ -1,0 +1,40 @@
+{
+  "schemaVersion": 1,
+  "id": "mop",
+  "version": "${version}",
+  "name": "${name}",
+  "description": "This is an example description! Tell everyone what your mod is about!",
+  "authors": [
+    "Wekend"
+  ],
+  "license": "LGPL-3.0",
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      {
+        "adapter": "kotlin",
+        "value": "dev.wekend.mop.Mop"
+      }
+    ],
+    "client": [
+      {
+        "adapter": "kotlin",
+        "value": "dev.wekend.mop.client.MopClient"
+      }
+    ],
+    "fabric-datagen": [
+      {
+        "adapter": "kotlin",
+        "value": "dev.wekend.mop.client.MopDataGenerator"
+      }
+    ]
+  },
+  "mixins": [
+    "mop.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16",
+    "fabric-language-kotlin": ">=1.13.6+kotlin.2.2.20",
+    "minecraft": "${minecraft}"
+  }
+}
