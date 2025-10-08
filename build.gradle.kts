@@ -1,6 +1,7 @@
 plugins {
     `maven-publish`
     id("fabric-loom")
+    `kotlin-dsl`
 }
 
 version = "${property("mod.version")}+${stonecutter.current.version}"
