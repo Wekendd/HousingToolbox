@@ -3,11 +3,11 @@
 
   "yacl3.config.mop.category.input": "Input Improvements",
   "yacl3.config.mop.category.input.group.anvil": "Anvil",
-  "yacl3.config.mop.category.input.group.anvil.option.anvilAutoConfirm": "Anvil Auto Confirm",
+  "yacl3.config.mop.category.input.group.anvil.option.anvilAutoConfirm": "Enter to Confirm",
   "yacl3.config.mop.category.input.group.anvil.option.anvilAutoConfirm.description.1": "Allows pressing ENTER to confirm your input in anvil inputs.",
 
   "yacl3.config.mop.category.input.group.sign": "Sign",
-  "yacl3.config.mop.category.input.group.sign.option.signAutoConfirm": "Sign Auto Confirm",
+  "yacl3.config.mop.category.input.group.sign.option.signAutoConfirm": "Enter to Confirm",
   "yacl3.config.mop.category.input.group.sign.option.signAutoConfirm.description.1": "Allows pressing ENTER to confirm your input in sign inputs.",
 
   "yacl3.config.mop.category.input.group.chat": "Chat",
