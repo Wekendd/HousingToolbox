@@ -18,6 +18,8 @@ repositories {
     }
 
     strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
+    strictMaven("https://maven.terraformersmc.com/", "Terraformers")
+    strictMaven("https://maven.isxander.dev/releases", "Xander Maven")
 }
 
 dependencies {
@@ -33,6 +35,9 @@ dependencies {
     mappings("net.fabricmc:yarn:${property("deps.yarn")}:v2")
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
     modImplementation("net.fabricmc:fabric-language-kotlin:${property("deps.kotlin_loader")}")
+
+    modImplementation("com.terraformersmc:modmenu:${property("deps.modmenu")}")
+    modImplementation("dev.isxander:yet-another-config-lib:${property("deps.yacl")}")
 
     fapi("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-content-registries-v0")
 }
@@ -51,10 +56,7 @@ loom {
 
 java {
     withSourcesJar()
-    val requiresJava21: Boolean = stonecutter.eval(stonecutter.current.version, ">=1.20.6")
-    val javaVersion: JavaVersion =
-        if (requiresJava21) JavaVersion.VERSION_21
-        else JavaVersion.VERSION_17
+    val javaVersion: JavaVersion = JavaVersion.VERSION_21
     targetCompatibility = javaVersion
     sourceCompatibility = javaVersion
 }
@@ -70,7 +72,8 @@ tasks {
             "id" to project.property("mod.id"),
             "name" to project.property("mod.id"),
             "version" to project.property("mod.id"),
-            "minecraft" to project.property("mod.mc_dep")
+            "minecraft" to project.property("mod.mc_dep"),
+            "yacl" to project.property("deps.yacl")
         )
 
         filesMatching("fabric.mod.json") { expand(props) }

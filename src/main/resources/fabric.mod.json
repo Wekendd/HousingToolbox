@@ -1,31 +1,30 @@
 {
   "schemaVersion": 1,
-  "id": "mop",
+  "id": "${id}",
   "version": "${version}",
   "name": "${name}",
   "description": "This is an example description! Tell everyone what your mod is about!",
   "authors": [
     "Wekend"
   ],
+  "contact": {
+    "homepage": "https://wekend.dev",
+    "sources": "https://github.com/Wekendd/Mop",
+    "issues": "https://github.com/Wekendd/Mop/issues"
+  },
   "license": "LGPL-3.0",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
-    "main": [
+    "client": [
       {
         "adapter": "kotlin",
         "value": "dev.wekend.mop.Mop"
       }
     ],
-    "client": [
+    "modmenu": [
       {
         "adapter": "kotlin",
-        "value": "dev.wekend.mop.client.MopClient"
-      }
-    ],
-    "fabric-datagen": [
-      {
-        "adapter": "kotlin",
-        "value": "dev.wekend.mop.client.MopDataGenerator"
+        "value": "dev.wekend.mop.integrations.ModMenuIntegration"
       }
     ]
   },
@@ -35,6 +34,7 @@
   "depends": {
     "fabricloader": ">=0.16",
     "fabric-language-kotlin": ">=1.13.6+kotlin.2.2.20",
-    "minecraft": "${minecraft}"
+    "minecraft": "${minecraft}",
+    "yet_another_config_lib_v3": ">=${yacl}"
   }
 }
