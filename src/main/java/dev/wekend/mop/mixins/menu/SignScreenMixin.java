@@ -1,6 +1,5 @@
 package dev.wekend.mop.mixins.menu;
 
-import dev.wekend.mop.Mop;
 import dev.wekend.mop.config.MopSettings;
 import dev.wekend.mop.utils.TextUtils;
 import net.minecraft.block.entity.SignText;
@@ -38,7 +37,7 @@ public abstract class SignScreenMixin extends Screen {
     private void onEnterKeyPressed(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
         if (!TextUtils.INSTANCE.isInputSign(this.text)) return;
 
-        if (!MopSettings.Companion.getSignAutoConfirm().get()) return;
+        if (!MopSettings.Companion.getSignEnterConfirm().get()) return;
         if (!input.isEnter()) return;
 
         this.close();

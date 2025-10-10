@@ -1,6 +1,5 @@
 package dev.wekend.mop.config
 
-import dev.isxander.yacl3.api.*
 import dev.isxander.yacl3.config.v3.register
 import dev.isxander.yacl3.dsl.*
 import net.minecraft.client.gui.screen.Screen
@@ -15,18 +14,18 @@ private class SettingsGuiFactory {
 
         val input by categories.registering {
             val anvil by groups.registering {
-                options.register(MopSettings.anvilAutoConfirm) {
+                options.register(MopSettings.anvilEnterConfirm) {
                     defaultDescription()
                     controller = tickBox()
                 }
-                options.register(MopSettings.anvilAutoConfirmStrict) {
+                options.register(MopSettings.anvilEnterConfirmGlobal) {
                     defaultDescription()
                     controller = tickBox()
                 }
             }
 
             val sign by groups.registering {
-                options.register(MopSettings.signAutoConfirm) {
+                options.register(MopSettings.signEnterConfirm) {
                     defaultDescription()
                     controller = tickBox()
                 }
