@@ -2,6 +2,7 @@ package dev.wekend.mop.mixins.menu;
 
 import dev.wekend.mop.Mop;
 import dev.wekend.mop.config.MopSettings;
+import dev.wekend.mop.utils.TextUtils;
 import net.minecraft.block.entity.SignText;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.AbstractSignEditScreen;
