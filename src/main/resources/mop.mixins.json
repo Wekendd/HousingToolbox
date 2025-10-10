@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "client": [
     "menu.AnvilScreenMixin",
+    "menu.ScreenCloseMixin",
     "menu.SignScreenMixin"
   ],
   "injectors": {

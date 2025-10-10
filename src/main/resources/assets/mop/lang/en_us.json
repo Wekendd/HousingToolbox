@@ -16,5 +16,5 @@
   "yacl3.config.mop.category.input.group.chat.option.chatAutoOpen": "Auto Open Chat",
   "yacl3.config.mop.category.input.group.chat.option.chatAutoOpen.description.1": "Opens chat automatically when Housing asks for chat input.",
   "yacl3.config.mop.category.input.group.chat.option.chatIncludePrevious": "Include Previous Value",
-  "yacl3.config.mop.category.input.group.chat.option.chatIncludePrevious.description.1": "Includes the previous value for an input in the chat box, highlighted."
+  "yacl3.config.mop.category.input.group.chat.option.chatIncludePrevious.description.1": "Includes the previously used value for an input in the chat box when automatically opened."
 }
