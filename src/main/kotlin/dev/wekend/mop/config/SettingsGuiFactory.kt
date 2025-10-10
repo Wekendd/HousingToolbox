@@ -19,6 +19,10 @@ private class SettingsGuiFactory {
                     defaultDescription()
                     controller = tickBox()
                 }
+                options.register(MopSettings.anvilAutoConfirmStrict) {
+                    defaultDescription()
+                    controller = tickBox()
+                }
             }
 
             val sign by groups.registering {

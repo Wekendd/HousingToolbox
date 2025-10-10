@@ -5,6 +5,8 @@
   "yacl3.config.mop.category.input.group.anvil": "Anvil",
   "yacl3.config.mop.category.input.group.anvil.option.anvilAutoConfirm": "Enter to Confirm",
   "yacl3.config.mop.category.input.group.anvil.option.anvilAutoConfirm.description.1": "Allows pressing ENTER to confirm your input in anvil inputs.",
+  "yacl3.config.mop.category.input.group.anvil.option.anvilAutoConfirmStrict": "Strict Mode",
+  "yacl3.config.mop.category.input.group.anvil.option.anvilAutoConfirmStrict.description.1": "Only allow Enter to Confirm in detected anvil inputs, instead of all anvils.",
 
   "yacl3.config.mop.category.input.group.sign": "Sign",
   "yacl3.config.mop.category.input.group.sign.option.signAutoConfirm": "Enter to Confirm",

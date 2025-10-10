@@ -31,8 +31,12 @@ public abstract class SignScreenMixin extends Screen {
         super(title);
     }
 
+
+
     @Inject(method = "keyPressed", at = @At("HEAD"))
     private void onEnterKeyPressed(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
+        if (!TextUtils.INSTANCE.isInputSign(this.text)) return;
+
         if (!MopSettings.Companion.getSignAutoConfirm().get()) return;
         if (!input.isEnter()) return;
 

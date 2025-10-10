@@ -22,9 +22,6 @@ object Mop : ClientModInitializer {
         LOGGER.info("Hello World!");
 
         MopSettings
-
-
-
     }
 
     fun id(namespace: String, path: String): Identifier =

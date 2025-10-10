@@ -6,6 +6,9 @@ import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.client.gui.screen.ingame.ForgingScreen;
 import net.minecraft.client.input.KeyInput;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.Items;
 import net.minecraft.screen.AnvilScreenHandler;
 import net.minecraft.screen.slot.SlotActionType;
 import net.minecraft.text.Text;
@@ -26,6 +29,14 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
     private void onEnterKeyPressed(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
         if (!MopSettings.Companion.getAnvilAutoConfirm().get()) return;
         if (!input.isEnter()) return;
+
+        if (MopSettings.Companion.getAnvilAutoConfirmStrict().get()) {
+            ItemStack item = this.handler.getSlot(0).getStack();
+            if (item == null) return;
+
+            if (item.getItem() != Items.PAPER) return;
+            if (item.getName().getLiteralString() != null) return;
+        }
 
         // Click output slot
         if (client == null || client.interactionManager == null) return;

@@ -10,6 +10,7 @@ open class MopSettings(): JsonFileCodecConfig<MopSettings>(
     FabricLoader.getInstance().configDir.resolve("mop.json")
 ) {
     val anvilAutoConfirm by register<Boolean>(default = true, Codec.BOOL)
+    val anvilAutoConfirmStrict by register<Boolean>(default = true, Codec.BOOL)
 
     val signAutoConfirm by register<Boolean>(default = true, Codec.BOOL)
 
@@ -21,6 +22,7 @@ open class MopSettings(): JsonFileCodecConfig<MopSettings>(
 
     final val allSettings = arrayOf(
         anvilAutoConfirm,
+        anvilAutoConfirmStrict,
         signAutoConfirm,
         chatAutoOpen,
         _firstLaunch
@@ -28,6 +30,7 @@ open class MopSettings(): JsonFileCodecConfig<MopSettings>(
 
     constructor(settings: MopSettings) : this() {
         this.anvilAutoConfirm.value = settings.anvilAutoConfirm.value
+        this.anvilAutoConfirmStrict.value = settings.anvilAutoConfirmStrict.value
         this.signAutoConfirm.value = settings.signAutoConfirm.value
         this.chatAutoOpen.value = settings.chatAutoOpen.value
         this.chatIncludePrevious.value = settings.chatIncludePrevious.value
