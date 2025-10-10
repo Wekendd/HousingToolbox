@@ -1,7 +1,7 @@
 plugins {
-    `maven-publish`
+    kotlin("jvm") version "2.2.10"
     id("fabric-loom")
-    `kotlin-dsl`
+    `maven-publish`
 }
 
 version = "${property("mod.version")}+${stonecutter.current.version}"
@@ -20,6 +20,8 @@ repositories {
     strictMaven("https://api.modrinth.com/maven", "Modrinth", "maven.modrinth")
     strictMaven("https://maven.terraformersmc.com/", "Terraformers")
     strictMaven("https://maven.isxander.dev/releases", "Xander Maven")
+
+    strictMaven("https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1", "DevAuth")
 }
 
 dependencies {
@@ -40,6 +42,8 @@ dependencies {
     modImplementation("dev.isxander:yet-another-config-lib:${property("deps.yacl")}")
 
     fapi("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-content-registries-v0")
+
+    modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.1")
 }
 
 loom {
@@ -70,8 +74,8 @@ tasks {
 
         val props = mapOf(
             "id" to project.property("mod.id"),
-            "name" to project.property("mod.id"),
-            "version" to project.property("mod.id"),
+            "name" to project.property("mod.name"),
+            "version" to project.property("mod.version"),
             "minecraft" to project.property("mod.mc_dep"),
             "yacl" to project.property("deps.yacl")
         )

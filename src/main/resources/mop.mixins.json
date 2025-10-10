@@ -1,11 +1,11 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "dev.wekend.mop.mixin",
+  "package": "dev.wekend.mop.mixins",
   "compatibilityLevel": "JAVA_21",
-  "mixins": [
-  ],
   "client": [
+    "menu.AnvilScreenMixin",
+    "menu.SignScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

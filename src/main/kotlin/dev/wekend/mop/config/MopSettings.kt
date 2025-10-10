@@ -10,7 +10,9 @@ open class MopSettings(): JsonFileCodecConfig<MopSettings>(
     FabricLoader.getInstance().configDir.resolve("mop.json")
 ) {
     val anvilAutoConfirm by register<Boolean>(default = true, Codec.BOOL)
+
     val signAutoConfirm by register<Boolean>(default = true, Codec.BOOL)
+
     val chatAutoOpen by register<Boolean>(default = true, Codec.BOOL)
     val chatIncludePrevious by register<Boolean>(default = true, Codec.BOOL)
 
