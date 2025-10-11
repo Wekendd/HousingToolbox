@@ -10,4 +10,4 @@ A mod to improve the Hypixel Housing developer experience.
     * **Chat:** Automatically opens when input is requested, with your previous input waiting for you. No more pressing `T`!
 
 ## Demo
-<iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/rnrbYSK-OVw" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+[![Mop Demo](https://img.youtube.com/vi/rnrbYSK-OVw/0.jpg)](https://www.youtube-nocookie.com/embed/rnrbYSK-OVw)
