@@ -13,23 +13,24 @@ object ChatEvents {
     fun onGameMessage(message: Text) {
         if (!MopSettings.chatAutoOpen.get()) return
 
-        val prevInput: String? = message.siblings
-            .firstNotNullOfOrNull { sibling ->
-                val isPrevious = (sibling.content as? PlainTextContent.Literal)?.string() == " [PREVIOUS]"
-                if (isPrevious) (sibling.style.clickEvent as? ClickEvent.SuggestCommand)?.command
-                else null
-            }
-        if (prevInput == null) return
+        val inputRequested = message.siblings.firstOrNull { sibling ->
+            (sibling.content as? PlainTextContent.Literal)?.string() == " [CANCEL]"
+        } != null
+        if (!inputRequested) return
+
+        val prevInput = message.siblings.firstNotNullOfOrNull { sibling ->
+            if ((sibling.content as? PlainTextContent.Literal)?.string() == " [PREVIOUS]") {
+                (sibling.style.clickEvent as? ClickEvent.SuggestCommand)?.command
+            } else null
+        }
 
         val client = MinecraftClient.getInstance()
 
-        // Set up tick window to ignore server's close screen packet
+        // Ignore server's close screen packet for 2 ticks
         IgnoreCloseScreens.startIgnoring(2)
         ClientTickEvents.END_WORLD_TICK.register { IgnoreCloseScreens.tick() }
 
-        val chatScreen = if (
-            MopSettings.chatIncludePrevious.get()
-        ) {
+        val chatScreen = if (MopSettings.chatIncludePrevious.get() && prevInput != null) {
             ChatScreen(prevInput, true)
         } else {
             ChatScreen("", false)
