@@ -1,6 +1,6 @@
-package dev.wekend.mop.mixins.menu;
+package dev.wekend.housingtoolbox.mixins.menu;
 
-import dev.wekend.mop.config.MopSettings;
+import dev.wekend.housingtoolbox.config.HousingToolboxSettings;
 import net.minecraft.client.gui.screen.ingame.AnvilScreen;
 import net.minecraft.client.gui.screen.ingame.ForgingScreen;
 import net.minecraft.client.input.KeyInput;
@@ -25,10 +25,10 @@ public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler>
 
     @Inject(method = "keyPressed", at = @At("HEAD"))
     private void onEnterKeyPressed(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
-        if (!MopSettings.Companion.getAnvilEnterConfirm().get()) return;
+        if (!HousingToolboxSettings.Companion.getAnvilEnterConfirm().get()) return;
         if (!input.isEnter()) return;
 
-        if (!MopSettings.Companion.getAnvilEnterConfirmGlobal().get()) {
+        if (!HousingToolboxSettings.Companion.getAnvilEnterConfirmGlobal().get()) {
             ItemStack item = this.handler.getSlot(0).getStack();
             if (item == null) return;
 

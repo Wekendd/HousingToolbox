@@ -36,7 +36,7 @@ dependencies {
     minecraft("com.mojang:minecraft:${stonecutter.current.version}")
     mappings("net.fabricmc:yarn:${property("deps.yarn")}:v2")
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
-    modImplementation("net.fabricmc:fabric-language-kotlin:${property("deps.kotlin_loader")}")
+    modImplementation("net.fabricmc:fabric-language-kotlin:${property("deps.fabric_language_kotlin")}")
 
     modImplementation("com.terraformersmc:modmenu:${property("deps.modmenu")}")
     modImplementation("dev.isxander:yet-another-config-lib:${property("deps.yacl")}")
@@ -67,16 +67,13 @@ java {
 
 tasks {
     processResources {
-        inputs.property("id", project.property("mod.id"))
-        inputs.property("name", project.property("mod.name"))
-        inputs.property("version", project.property("mod.version"))
-        inputs.property("minecraft", project.property("mod.mc_dep"))
-
         val props = mapOf(
             "id" to project.property("mod.id"),
             "name" to project.property("mod.name"),
             "version" to project.property("mod.version"),
             "minecraft" to project.property("mod.mc_dep"),
+            "fabric_loader" to project.property("deps.fabric_loader"),
+            "fabric_language_kotlin" to project.property("deps.fabric_language_kotlin"),
             "yacl" to project.property("deps.yacl")
         )
 

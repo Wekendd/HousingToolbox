@@ -1,6 +1,6 @@
-package dev.wekend.mop.mixins.menu;
+package dev.wekend.housingtoolbox.mixins.menu;
 
-import dev.wekend.mop.events.IgnoreCloseScreens;
+import dev.wekend.housingtoolbox.events.IgnoreCloseScreens;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.client.network.ClientConnectionState;

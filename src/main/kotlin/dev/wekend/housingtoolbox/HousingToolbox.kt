@@ -1,18 +1,13 @@
-package dev.wekend.mop
+package dev.wekend.housingtoolbox
 
-import dev.wekend.mop.config.MopSettings
-import dev.wekend.mop.events.ChatEvents
+import dev.wekend.housingtoolbox.events.ChatEvents
 import net.fabricmc.api.ClientModInitializer
-import net.fabricmc.api.ModInitializer;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientEntityEvents
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
-import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-object Mop : ClientModInitializer {
-    val LOGGER: Logger = LoggerFactory.getLogger("Mop")
+object HousingToolbox : ClientModInitializer {
+    val LOGGER: Logger = LoggerFactory.getLogger("Housing Toolbox")
     val VERSION = /*$ mod_version*/ "0.0.1"
     val MINECRAFT = /*$ minecraft*/ "1.21.9"
 
@@ -21,7 +16,7 @@ object Mop : ClientModInitializer {
         // However, some things (like resources) may still be uninitialized.
         // Proceed with mild caution.
 
-        LOGGER.info("Loaded Mop v$VERSION for Minecraft $MINECRAFT.");
+        LOGGER.info("Loaded Housing Toolbox v$VERSION for Minecraft $MINECRAFT.");
 
         ClientReceiveMessageEvents.GAME.register { message, _ -> ChatEvents.onGameMessage(message) }
     }

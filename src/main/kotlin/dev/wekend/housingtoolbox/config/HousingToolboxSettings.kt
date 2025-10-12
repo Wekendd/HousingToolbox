@@ -1,4 +1,4 @@
-package dev.wekend.mop.config
+package dev.wekend.housingtoolbox.config
 
 import com.mojang.serialization.Codec
 import dev.isxander.yacl3.config.v3.JsonFileCodecConfig
@@ -6,8 +6,8 @@ import dev.isxander.yacl3.config.v3.register
 import dev.isxander.yacl3.config.v3.value
 import net.fabricmc.loader.api.FabricLoader
 
-open class MopSettings(): JsonFileCodecConfig<MopSettings>(
-    FabricLoader.getInstance().configDir.resolve("mop.json")
+open class HousingToolboxSettings(): JsonFileCodecConfig<HousingToolboxSettings>(
+    FabricLoader.getInstance().configDir.resolve("housingtoolbox.json")
 ) {
     val anvilEnterConfirm by register<Boolean>(default = true, Codec.BOOL)
     val anvilEnterConfirmGlobal by register<Boolean>(default = false, Codec.BOOL)
@@ -28,7 +28,7 @@ open class MopSettings(): JsonFileCodecConfig<MopSettings>(
         _firstLaunch
     )
 
-    constructor(settings: MopSettings) : this() {
+    constructor(settings: HousingToolboxSettings) : this() {
         this.anvilEnterConfirm.value = settings.anvilEnterConfirm.value
         this.anvilEnterConfirmGlobal.value = settings.anvilEnterConfirmGlobal.value
         this.signEnterConfirm.value = settings.signEnterConfirm.value
@@ -37,7 +37,7 @@ open class MopSettings(): JsonFileCodecConfig<MopSettings>(
         this._firstLaunch.value = settings._firstLaunch.value
     }
 
-    companion object : MopSettings() {
+    companion object : HousingToolboxSettings() {
         init {
             if (!loadFromFile()) {
                 saveToFile()

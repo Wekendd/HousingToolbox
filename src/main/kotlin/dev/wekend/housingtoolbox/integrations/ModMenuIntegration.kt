@@ -1,8 +1,8 @@
-package dev.wekend.mop.integrations
+package dev.wekend.housingtoolbox.integrations
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory
 import com.terraformersmc.modmenu.api.ModMenuApi
-import dev.wekend.mop.config.createSettingsGui
+import dev.wekend.housingtoolbox.config.createSettingsGui
 
 object ModMenuIntegration: ModMenuApi {
     override fun getModConfigScreenFactory(): ConfigScreenFactory<*> = ConfigScreenFactory { parent ->

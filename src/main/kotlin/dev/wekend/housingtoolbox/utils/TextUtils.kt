@@ -1,10 +1,6 @@
-package dev.wekend.mop.utils
+package dev.wekend.housingtoolbox.utils
 
-import dev.wekend.mop.Mop
 import net.minecraft.block.entity.SignText
-import net.minecraft.text.Text
-import java.util.Arrays
-import java.util.regex.Pattern
 
 
 object TextUtils {

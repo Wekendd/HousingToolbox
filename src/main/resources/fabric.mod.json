@@ -9,32 +9,32 @@
   ],
   "contact": {
     "homepage": "https://wekend.dev",
-    "sources": "https://github.com/Wekendd/Mop",
-    "issues": "https://github.com/Wekendd/Mop/issues"
+    "sources": "https://github.com/Wekendd/${id}",
+    "issues": "https://github.com/Wekendd/${id}/issues"
   },
   "license": "LGPL-3.0",
   "environment": "client",
-  "icon": "assets/mop/icon.png",
+  "icon": "assets/housingtoolbox/icon.png",
   "entrypoints": {
     "client": [
       {
         "adapter": "kotlin",
-        "value": "dev.wekend.mop.Mop"
+        "value": "dev.wekend.housingtoolbox.HousingToolbox"
       }
     ],
     "modmenu": [
       {
         "adapter": "kotlin",
-        "value": "dev.wekend.mop.integrations.ModMenuIntegration"
+        "value": "dev.wekend.housingtoolbox.integrations.ModMenuIntegration"
       }
     ]
   },
   "mixins": [
-    "mop.mixins.json"
+    "housingtoolbox.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.16",
-    "fabric-language-kotlin": ">=1.13.6+kotlin.2.2.20",
+    "fabricloader": ">=${fabric_loader}",
+    "fabric-language-kotlin": ">=${fabric_language_kotlin}",
     "minecraft": "${minecraft}",
     "yet_another_config_lib_v3": ">=${yacl}"
   }

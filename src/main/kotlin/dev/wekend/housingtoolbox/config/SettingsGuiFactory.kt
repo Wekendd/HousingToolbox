@@ -1,4 +1,4 @@
-package dev.wekend.mop.config
+package dev.wekend.housingtoolbox.config
 
 import dev.isxander.yacl3.config.v3.register
 import dev.isxander.yacl3.dsl.*
@@ -7,36 +7,36 @@ import net.minecraft.client.gui.screen.Screen
 fun createSettingsGui(parent: Screen?) = SettingsGuiFactory().createSettingsGui(parent)
 
 private class SettingsGuiFactory {
-    val settings = MopSettings(MopSettings)
+    val settings = HousingToolboxSettings(HousingToolboxSettings)
 
-    fun createSettingsGui(parent: Screen?) = YetAnotherConfigLib("mop") {
-        save(MopSettings::saveToFile)
+    fun createSettingsGui(parent: Screen?) = YetAnotherConfigLib("housingtoolbox") {
+        save(HousingToolboxSettings::saveToFile)
 
         val input by categories.registering {
             val anvil by groups.registering {
-                options.register(MopSettings.anvilEnterConfirm) {
+                options.register(HousingToolboxSettings.anvilEnterConfirm) {
                     defaultDescription()
                     controller = tickBox()
                 }
-                options.register(MopSettings.anvilEnterConfirmGlobal) {
+                options.register(HousingToolboxSettings.anvilEnterConfirmGlobal) {
                     defaultDescription()
                     controller = tickBox()
                 }
             }
 
             val sign by groups.registering {
-                options.register(MopSettings.signEnterConfirm) {
+                options.register(HousingToolboxSettings.signEnterConfirm) {
                     defaultDescription()
                     controller = tickBox()
                 }
             }
 
             val chat by groups.registering {
-                options.register(MopSettings.chatAutoOpen) {
+                options.register(HousingToolboxSettings.chatAutoOpen) {
                     defaultDescription()
                     controller = tickBox()
                 }
-                options.register(MopSettings.chatIncludePrevious) {
+                options.register(HousingToolboxSettings.chatIncludePrevious) {
                     defaultDescription()
                     controller = tickBox()
                 }

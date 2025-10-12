@@ -1,7 +1,6 @@
-package dev.wekend.mop.events
+package dev.wekend.housingtoolbox.events
 
-import dev.wekend.mop.Mop
-import dev.wekend.mop.config.MopSettings
+import dev.wekend.housingtoolbox.config.HousingToolboxSettings
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.ChatScreen
@@ -11,7 +10,7 @@ import net.minecraft.text.Text
 
 object ChatEvents {
     fun onGameMessage(message: Text) {
-        if (!MopSettings.chatAutoOpen.get()) return
+        if (!HousingToolboxSettings.chatAutoOpen.get()) return
 
         val inputRequested = message.siblings.firstOrNull { sibling ->
             (sibling.content as? PlainTextContent.Literal)?.string() == " [CANCEL]"
@@ -30,7 +29,7 @@ object ChatEvents {
         IgnoreCloseScreens.startIgnoring(2)
         ClientTickEvents.END_WORLD_TICK.register { IgnoreCloseScreens.tick() }
 
-        val chatScreen = if (MopSettings.chatIncludePrevious.get() && prevInput != null) {
+        val chatScreen = if (HousingToolboxSettings.chatIncludePrevious.get() && prevInput != null) {
             ChatScreen(prevInput, true)
         } else {
             ChatScreen("", false)

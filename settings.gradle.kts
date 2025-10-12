@@ -18,4 +18,4 @@ stonecutter {
     }
 }
 
-rootProject.name = "Mop"
+rootProject.name = "HousingToolbox"
