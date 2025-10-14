@@ -1,4 +1,4 @@
-package dev.wekend.housingtoolbox.events
+package dev.wekend.housingtoolbox.feature
 
 import dev.wekend.housingtoolbox.config.HousingToolboxSettings
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
@@ -8,7 +8,8 @@ import net.minecraft.text.ClickEvent
 import net.minecraft.text.PlainTextContent
 import net.minecraft.text.Text
 
-object ChatEvents {
+object ChatInput {
+
     fun onGameMessage(message: Text) {
         if (!HousingToolboxSettings.chatAutoOpen.get()) return
 
@@ -38,18 +39,18 @@ object ChatEvents {
         client.setScreen(chatScreen)
     }
 
-}
+    object IgnoreCloseScreens {
+        private var ignoreTicks = 0
 
-object IgnoreCloseScreens {
-    private var ignoreTicks = 0
+        fun tick() {
+            if (ignoreTicks > 0) ignoreTicks--
+        }
 
-    fun tick() {
-        if (ignoreTicks > 0) ignoreTicks--
+        fun startIgnoring(ticks: Int) {
+            ignoreTicks = ticks
+        }
+
+        fun shouldIgnore(): Boolean = ignoreTicks > 0
     }
 
-    fun startIgnoring(ticks: Int) {
-        ignoreTicks = ticks
-    }
-
-    fun shouldIgnore(): Boolean = ignoreTicks > 0
 }

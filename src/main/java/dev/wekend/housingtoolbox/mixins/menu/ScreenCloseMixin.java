@@ -1,6 +1,6 @@
 package dev.wekend.housingtoolbox.mixins.menu;
 
-import dev.wekend.housingtoolbox.events.IgnoreCloseScreens;
+import dev.wekend.housingtoolbox.feature.ChatInput;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientCommonNetworkHandler;
 import net.minecraft.client.network.ClientConnectionState;
@@ -22,7 +22,7 @@ public abstract class ScreenCloseMixin extends ClientCommonNetworkHandler implem
 
     @Inject(method = "onCloseScreen", at = @At("HEAD"), cancellable = true)
     private void onCloseScreen(CloseScreenS2CPacket packet, CallbackInfo ci) {
-        if (IgnoreCloseScreens.INSTANCE.shouldIgnore()) ci.cancel();
+        if (ChatInput.IgnoreCloseScreens.INSTANCE.shouldIgnore()) ci.cancel();
     }
 
 }

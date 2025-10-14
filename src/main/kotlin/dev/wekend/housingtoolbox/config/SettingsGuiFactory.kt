@@ -2,6 +2,7 @@ package dev.wekend.housingtoolbox.config
 
 import dev.isxander.yacl3.config.v3.register
 import dev.isxander.yacl3.dsl.*
+import dev.wekend.housingtoolbox.HousingToolbox
 import net.minecraft.client.gui.screen.Screen
 
 fun createSettingsGui(parent: Screen?) = SettingsGuiFactory().createSettingsGui(parent)
@@ -9,7 +10,7 @@ fun createSettingsGui(parent: Screen?) = SettingsGuiFactory().createSettingsGui(
 private class SettingsGuiFactory {
     val settings = HousingToolboxSettings(HousingToolboxSettings)
 
-    fun createSettingsGui(parent: Screen?) = YetAnotherConfigLib("housingtoolbox") {
+    fun createSettingsGui(parent: Screen?) = YetAnotherConfigLib(HousingToolbox.MOD_ID) {
         save(HousingToolboxSettings::saveToFile)
 
         val input by categories.registering {

@@ -25,7 +25,7 @@
     "modmenu": [
       {
         "adapter": "kotlin",
-        "value": "dev.wekend.housingtoolbox.integrations.ModMenuIntegration"
+        "value": "dev.wekend.housingtoolbox.integration.ModMenuIntegration"
       }
     ]
   },
@@ -34,8 +34,8 @@
   ],
   "depends": {
     "fabricloader": ">=${fabric_loader}",
-    "fabric-language-kotlin": ">=${fabric_language_kotlin}",
     "minecraft": "${minecraft}",
+    "fabric-language-kotlin": ">=${fabric_language_kotlin}",
     "yet_another_config_lib_v3": ">=${yacl}"
   }
 }

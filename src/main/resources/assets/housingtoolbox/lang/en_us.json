@@ -16,5 +16,16 @@
   "yacl3.config.housingtoolbox.category.input.group.chat.option.chatAutoOpen": "Auto-Open Chat for Input",
   "yacl3.config.housingtoolbox.category.input.group.chat.option.chatAutoOpen.description.1": "Opens chat automatically when Housing asks for chat input.",
   "yacl3.config.housingtoolbox.category.input.group.chat.option.chatIncludePrevious": "Include Previous Value",
-  "yacl3.config.housingtoolbox.category.input.group.chat.option.chatIncludePrevious.description.1": "Includes the previously used value for an input in the chat box when automatically opened."
+  "yacl3.config.housingtoolbox.category.input.group.chat.option.chatIncludePrevious.description.1": "Includes the previously used value for an input in the chat box when automatically opened.",
+
+
+  "key.category.housingtoolbox.housing": "Housing",
+  "key.housingtoolbox.menu": "Open Main Menu",
+  "key.housingtoolbox.functions": "Open Functions Menu",
+  "key.housingtoolbox.events": "Open Events Menu",
+
+  "key.housingtoolbox.search": "Search",
+  "key.housingtoolbox.back": "Back",
+  "key.housingtoolbox.nextpage": "Next Page",
+  "key.housingtoolbox.prevpage": "Previous Page"
 }

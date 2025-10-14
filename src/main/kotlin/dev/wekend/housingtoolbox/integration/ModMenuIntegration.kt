@@ -1,4 +1,4 @@
-package dev.wekend.housingtoolbox.integrations
+package dev.wekend.housingtoolbox.integration
 
 import com.terraformersmc.modmenu.api.ConfigScreenFactory
 import com.terraformersmc.modmenu.api.ModMenuApi
