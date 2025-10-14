@@ -39,8 +39,8 @@ object MenuUtils {
     fun clickMenuTargets(vararg attempts: Target): Boolean =
         withContainer { gui ->
             val match = attempts.firstNotNullOfOrNull {
-                val s = findSlot(gui, it.menuSlot.item, it.menuSlot.label)
-                if (s != null) it to s else null
+                val slot = findSlot(gui, it.menuSlot.item, it.menuSlot.label)
+                if (slot != null) it to slot else null
             } ?: return@withContainer false
             click(gui, match.second.id, match.first.button)
             true
