@@ -41,7 +41,7 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:${property("deps.fabric_language_kotlin")}")
     modImplementation("com.terraformersmc:modmenu:${property("deps.modmenu")}")
     modImplementation("dev.isxander:yet-another-config-lib:${property("deps.yacl")}")
-    modImplementation("de.siphalor.amecs-api:amecs-api-mc${stonecutter.current.version}:${property("deps.amecs")}")
+    include(modImplementation("de.siphalor.amecs-api:amecs-api-mc${stonecutter.current.version}:${property("deps.amecs")}")!!)
 
 
     fapi("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-content-registries-v0")

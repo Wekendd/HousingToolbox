@@ -4,9 +4,7 @@ import de.siphalor.amecs.api.KeyModifiers
 import dev.wekend.housingtoolbox.keybind.KeyBindings.KeySpec
 import dev.wekend.housingtoolbox.util.MenuUtils
 import dev.wekend.housingtoolbox.util.MenuUtils.clickMenuTargets
-import net.minecraft.item.Item
 import net.minecraft.item.Items
-import net.minecraft.screen.slot.SlotActionType
 import org.lwjgl.glfw.GLFW
 
 object KeyNav {

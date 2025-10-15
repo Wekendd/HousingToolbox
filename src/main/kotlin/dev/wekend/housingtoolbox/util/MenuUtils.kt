@@ -1,10 +1,13 @@
 package dev.wekend.housingtoolbox.util
 
 import dev.wekend.housingtoolbox.HousingToolbox.MC
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.item.Item
+import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket
 import net.minecraft.screen.slot.SlotActionType
+import net.minecraft.screen.sync.ItemStackHash
 
 object MenuUtils {
 
@@ -23,13 +26,16 @@ object MenuUtils {
         }
 
     fun click(gui: GenericContainerScreen, slot: Int, button: Int = 0) {
-        MC.interactionManager?.clickSlot(
+        val pkt = ClickSlotC2SPacket(
             gui.screenHandler.syncId,
-            slot,
-            button,
+            gui.screenHandler.revision,
+            slot.toShort(),
+            button.toByte(),
             SlotActionType.PICKUP,
-            MC.player
+            Int2ObjectOpenHashMap(),
+            ItemStackHash.EMPTY
         )
+        MC.networkHandler?.sendPacket(pkt)
     }
 
 

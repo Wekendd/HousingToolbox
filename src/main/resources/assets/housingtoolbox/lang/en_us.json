@@ -27,5 +27,8 @@
   "key.housingtoolbox.search": "Search",
   "key.housingtoolbox.back": "Back",
   "key.housingtoolbox.nextpage": "Next Page",
-  "key.housingtoolbox.prevpage": "Previous Page"
+  "key.housingtoolbox.prevpage": "Previous Page",
+  "key.housingtoolbox.copy": "Copy Actions",
+  "key.housingtoolbox.paste": "Paste Actions",
+  "key.housingtoolbox.undo": "Undo Last Deletion"
 }
