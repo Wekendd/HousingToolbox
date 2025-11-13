@@ -1,21 +1,11 @@
-package dev.wekend.housingtoolbox.api
+package dev.wekend.housingtoolbox.api.npc
 
 import dev.wekend.housingtoolbox.feature.data.Action
-import dev.wekend.housingtoolbox.feature.data.ItemStack
-import net.minecraft.item.Item
 
 interface Npc {
     var name: String
     suspend fun getName(): String = name
     suspend fun setName(newName: String)
-
-//    TODO: Implement npc types and... their different special settings...
-//    suspend fun getSkin(): String
-//    suspend fun setSkin(newSkin: String)
-
-//    TODO: implement this but good
-//    suspend fun getEquipment(): List<ItemStack>
-//    suspend fun setEquipment(newEquipment: List<ItemStack>)
 
     suspend fun getLookAtPlayers(): Boolean
     suspend fun setLookAtPlayers(newLookAtPlayers: Boolean)
