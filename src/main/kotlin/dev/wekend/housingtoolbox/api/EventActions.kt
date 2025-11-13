@@ -3,7 +3,7 @@ package dev.wekend.housingtoolbox.api
 import dev.wekend.housingtoolbox.feature.data.Action
 import net.minecraft.item.Item
 
-interface Function {
+interface EventActions {
     suspend fun getPlayerJoinActions(): List<Action>
     suspend fun setPlayerJoinActions(newActions: List<Action>, optimized: Boolean = false)
 
