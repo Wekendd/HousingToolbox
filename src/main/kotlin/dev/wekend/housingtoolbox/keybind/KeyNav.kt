@@ -16,7 +16,7 @@ object KeyNav {
                     id = "search",
                     key = GLFW.GLFW_KEY_F,
                     modifiers = KeyModifiers(false, true, false),
-                    onPress = { MenuUtils.clickMenuSlot(MenuItems.SEARCH, MenuItems.FILTER) }
+                    onPress = { MenuUtils.clickMenuSlot(MenuItems.SEARCH, MenuItems.SEARCH, MenuItems.FILTER) }
                 ),
                 KeySpec(
                     id = "copy",
@@ -68,6 +68,7 @@ object KeyNav {
     object MenuItems {
         val MAIN_MENU = MenuUtils.MenuSlot(Items.NETHER_STAR, "Main Menu")
         val SEARCH = MenuUtils.MenuSlot(Items.COMPASS, "Search")
+        val SEARCH2 = MenuUtils.MenuSlot(Items.OAK_SIGN, "Search")
         val FILTER = MenuUtils.MenuSlot(Items.OAK_SIGN, "Filter")
         val COPY = MenuUtils.MenuSlot(Items.WRITABLE_BOOK, "Copy Actions")
         val UNDO = MenuUtils.MenuSlot(Items.CAULDRON, "Restore Last Removed Action")
