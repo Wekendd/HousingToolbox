@@ -1,6 +1,7 @@
 package dev.wekend.housingtoolbox.api
 
 import dev.wekend.housingtoolbox.feature.data.Action
+import dev.wekend.housingtoolbox.feature.data.ItemStack
 
 interface CustomMenu {
     var name: String
@@ -8,31 +9,11 @@ interface CustomMenu {
     suspend fun getName(): String = name
     suspend fun setName(newName: String)
 
-    suspend fun getTag(): String
-    suspend fun setTag(newTag: String)
+    suspend fun getMenuSize(): Int
+    suspend fun setMenuSize(newSize: Int)
 
-    suspend fun getColor(): TeamColor
-    suspend fun setColor(newColor: TeamColor)
-
-    suspend fun getFriendlyFire(): Boolean
-    suspend fun setFriendlyFire(newFriendlyFire: Boolean)
+    suspend fun getMenuElements(): List<Pair<net.minecraft.item.ItemStack, List<Action>>?>
+    suspend fun setMenuElements(newMenuElements: List<Pair<ItemStack, List<Action>>?>)
 
     suspend fun delete()
-
-    enum class TeamColor {
-        DARK_BLUE,
-        DARK_GREEN,
-        DARK_AQUA,
-        DARK_RED,
-        DARK_PURPLE,
-        GOLD,
-        GRAY,
-        DARK_GRAY,
-        BLUE,
-        GREEN,
-        AQUA,
-        RED,
-        LIGHT_PURPLE,
-        YELLOW,
-    }
 }

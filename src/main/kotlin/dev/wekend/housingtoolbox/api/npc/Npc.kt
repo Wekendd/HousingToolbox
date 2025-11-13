@@ -7,6 +7,9 @@ interface Npc {
     suspend fun getName(): String = name
     suspend fun setName(newName: String)
 
+    suspend fun getSkin(): String
+    suspend fun setSkin(newSkin: String)
+
     suspend fun getLookAtPlayers(): Boolean
     suspend fun setLookAtPlayers(newLookAtPlayers: Boolean)
 

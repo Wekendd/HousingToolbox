@@ -4,57 +4,27 @@ import dev.wekend.housingtoolbox.feature.data.Action
 import net.minecraft.item.Item
 
 interface EventActions {
-    suspend fun getPlayerJoinActions(): List<Action>
-    suspend fun setPlayerJoinActions(newActions: List<Action>, optimized: Boolean = false)
+    enum class Events {
+        PLAYER_JOIN,
+        PLAYER_QUIT,
+        PLAYER_DEATH,
+        PLAYER_KILL,
+        PLAYER_RESPAWN,
+        GROUP_CHANGE,
+        PVP_STATE_CHANGE,
+        FISH_CATCH,
+        PLAYER_ENTER_PORTAL,
+        PLAYER_DAMAGE,
+        PLAYER_BLOCK_BREAK,
+        START_PARKOUR,
+        COMPLETE_PARKOUR,
+        PLAYER_DROP_ITEM,
+        PLAYER_PICKUP_ITEM,
+        PLAYER_CHANGE_HELD_ITEM,
+        PLAYER_TOGGLE_SNEAK,
+        PLAYER_TOGGLE_FLY
+    }
 
-    suspend fun getPlayerQuitActions(): List<Action>
-    suspend fun setPlayerQuitActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getPlayerDeathActions(): List<Action>
-    suspend fun setPlayerDeathActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getPlayerKillActions(): List<Action>
-    suspend fun setPlayerKillActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getPlayerRespawnActions(): List<Action>
-    suspend fun setPlayerRespawnActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getGroupChangeActions(): List<Action>
-    suspend fun setGroupChangeActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getPvpStateChangeActions(): List<Action>
-    suspend fun setPvpStateChangeActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getFishCaughtActions(): List<Action>
-    suspend fun setFishCaughtActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getPlayerEnterPortalActions(): List<Action>
-    suspend fun setPlayerEnterPortalActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getPlayerDamageActions(): List<Action>
-    suspend fun setPlayerDamageActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getPlayerBlockBreakActions(): List<Action>
-    suspend fun setPlayerBlockBreakActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getStartParkourActions(): List<Action>
-    suspend fun setStartParkourActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getCompleteParkourActions(): List<Action>
-    suspend fun setCompleteParkourActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getPlayerDropItemActions(): List<Action>
-    suspend fun setPlayerDropItemActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getPlayerPickUpItemActions(): List<Action>
-    suspend fun setPlayerPickUpItemActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getPlayerChangeHeldItemActions(): List<Action>
-    suspend fun setPlayerChangeHeldItemActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getPlayerToggleSneakActions(): List<Action>
-    suspend fun setPlayerToggleSneakActions(newActions: List<Action>, optimized: Boolean = false)
-
-    suspend fun getPlayerToggleFlightActions(): List<Action>
-    suspend fun setPlayerToggleFlightActions(newActions: List<Action>, optimized: Boolean = false)
+    suspend fun getActionsForEvent(event: Events): List<Action>
+    suspend fun setActionsForEvent(event: Events, newActions: List<Action>, optimized: Boolean = false)
 }
