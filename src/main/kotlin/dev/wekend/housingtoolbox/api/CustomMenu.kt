@@ -12,7 +12,7 @@ interface CustomMenu {
     suspend fun getMenuSize(): Int
     suspend fun setMenuSize(newSize: Int)
 
-    suspend fun getMenuElements(): List<Pair<Item, List<Action>>?>
+    suspend fun getMenuElements(): List<Pair<net.minecraft.item.ItemStack, List<Action>>?>
     suspend fun setMenuElements(newMenuElements: List<Pair<ItemStack, List<Action>>?>)
 
     suspend fun delete()
