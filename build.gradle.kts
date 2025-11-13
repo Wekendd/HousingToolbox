@@ -8,6 +8,7 @@ version = "${property("mod.version")}+${stonecutter.current.version}"
 base.archivesName = property("mod.id") as String
 
 repositories {
+
     /**
      * Restricts dependency search of the given [groups] to the [maven URL][url],
      * improving the setup speed.
@@ -43,6 +44,10 @@ dependencies {
     modImplementation("dev.isxander:yet-another-config-lib:${property("deps.yacl")}")
     include(modImplementation("de.siphalor.amecs-api:amecs-api-mc${stonecutter.current.version}:${property("deps.amecs")}")!!)
 
+    implementation("net.benwoodworth.knbt:knbt:${property("deps.knbt")}")
+
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-fabric-api:2.22.0")
+    implementation("com.github.shynixn.mccoroutine:mccoroutine-fabric-core:2.22.0")
 
     fapi("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-content-registries-v0")
 
