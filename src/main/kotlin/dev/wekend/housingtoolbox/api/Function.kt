@@ -5,9 +5,7 @@ import net.minecraft.item.Item
 
 interface Function {
     var name: String
-    suspend fun getName(): String {
-        return name
-    }
+    suspend fun getName(): String = name
     suspend fun setName(newName: String)
 
     suspend fun getDescription(): String
