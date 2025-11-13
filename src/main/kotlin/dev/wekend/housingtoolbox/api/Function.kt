@@ -1,6 +1,7 @@
 package dev.wekend.housingtoolbox.api
 
 import dev.wekend.housingtoolbox.feature.data.Action
+import dev.wekend.housingtoolbox.feature.data.ItemStack
 import net.minecraft.item.Item
 
 interface Function {
@@ -12,7 +13,7 @@ interface Function {
     suspend fun setDescription(newDescription: String)
 
     suspend fun getIcon(): Item
-    suspend fun setIcon(newIcon: Item)
+    suspend fun setIcon(newIcon: ItemStack)
 
     suspend fun getAutomaticExecution(): Int
     suspend fun setAutomaticExecution(newAutomaticExecution: Int)
