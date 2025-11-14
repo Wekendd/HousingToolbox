@@ -9,6 +9,8 @@ interface Function {
     suspend fun getName(): String = name
     suspend fun setName(newName: String)
 
+    suspend fun createIfNotExists()
+
     suspend fun getDescription(): String
     suspend fun setDescription(newDescription: String)
 

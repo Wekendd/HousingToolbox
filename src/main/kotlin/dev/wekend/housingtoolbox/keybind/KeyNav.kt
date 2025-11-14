@@ -1,6 +1,5 @@
 package dev.wekend.housingtoolbox.keybind
 
-import com.github.shynixn.mccoroutine.fabric.MCCoroutine
 import com.github.shynixn.mccoroutine.fabric.launch
 import de.siphalor.amecs.api.KeyModifiers
 import dev.wekend.housingtoolbox.HousingToolbox
@@ -11,6 +10,9 @@ import dev.wekend.housingtoolbox.util.MenuUtils.clickMenuTargets
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
+import net.minecraft.nbt.NbtCompound
+import net.minecraft.nbt.NbtElement
+import net.minecraft.nbt.NbtIo
 import net.minecraft.nbt.NbtOps
 import org.lwjgl.glfw.GLFW
 import kotlin.jvm.optionals.getOrNull
@@ -61,9 +63,14 @@ object KeyNav {
                     onPress = {
                         HousingToolbox.launch {
                             println("test keybind pressed")
-                            val importer = FunctionImporter("test")
-
-                            println("Function stack: ${importer.getIcon()}")
+                            val importer = FunctionImporter("test2")
+                            importer.createIfNotExists()
+                            importer.setName("test")
+                            val stack = Items.DIAMOND.defaultStack
+                            val result = ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, stack).result().getOrNull()?.asCompound()?.getOrNull() ?: return@launch
+                            importer.setIcon(
+                                dev.wekend.housingtoolbox.feature.data.ItemStack(result, "")
+                            )
                         }
                         true
                     }

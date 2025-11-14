@@ -12,7 +12,7 @@ import kotlinx.serialization.descriptors.PrimitiveSerialDescriptor
 import kotlinx.serialization.descriptors.SerialDescriptor
 import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
-import net.benwoodworth.knbt.NbtCompound
+import net.minecraft.nbt.NbtCompound
 
 /*
 Borrowed from https://github.com/sndyx/hsl, licensed under the MIT License

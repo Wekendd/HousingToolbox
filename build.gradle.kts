@@ -44,8 +44,6 @@ dependencies {
     modImplementation("dev.isxander:yet-another-config-lib:${property("deps.yacl")}")
     include(modImplementation("de.siphalor.amecs-api:amecs-api-mc${stonecutter.current.version}:${property("deps.amecs")}")!!)
 
-    implementation("net.benwoodworth.knbt:knbt:${property("deps.knbt")}")
-
     implementation("com.github.shynixn.mccoroutine:mccoroutine-fabric-api:2.22.0")
     implementation("com.github.shynixn.mccoroutine:mccoroutine-fabric-core:2.22.0")
 

@@ -1,10 +1,15 @@
 package dev.wekend.housingtoolbox.util
 
+import com.github.shynixn.mccoroutine.fabric.launch
+import dev.wekend.housingtoolbox.HousingToolbox
+import dev.wekend.housingtoolbox.HousingToolbox.MC
 import dev.wekend.housingtoolbox.feature.ChatInput
+import kotlinx.coroutines.delay
 import net.minecraft.block.entity.SignText
 import net.minecraft.client.MinecraftClient
 import net.minecraft.client.gui.screen.ingame.AnvilScreen
-import net.minecraft.item.Items
+import net.minecraft.network.packet.c2s.play.RenameItemC2SPacket
+import net.minecraft.screen.AnvilScreenHandler
 import net.minecraft.text.Text
 import net.minecraft.text.TextColor
 import net.minecraft.util.Formatting
@@ -28,7 +33,7 @@ object TextUtils {
     }
 
     fun isAnvilInput(name: String?): Boolean {
-        val container = MinecraftClient.getInstance().currentScreen as? AnvilScreen
+        val container = MC.currentScreen as? AnvilScreen
             ?: return false
         if (name == null) {
             return true
@@ -37,11 +42,11 @@ object TextUtils {
         }
     }
 
-    fun convertTextToString(text: Text): String {
+    fun convertTextToString(text: Text, colors: Boolean = true): String {
         return text.siblings.joinToString("") {
             var part = it.string
             val style = it.style
-            if (style.color != null) {
+            if (style.color != null && colors) {
                 val color: TextColor = style.color!!
                 for (format in Formatting.entries) {
                     if (color.rgb == format.colorValue) {
@@ -54,8 +59,7 @@ object TextUtils {
     }
 
     fun sendMessage(message: String) {
-        val player = MinecraftClient.getInstance().player
-        player?.networkHandler?.sendChatMessage(message)
+        MC.networkHandler?.sendChatMessage(message)
     }
 
     fun sendMessage(message: String, delayMs: Long) {
@@ -64,38 +68,21 @@ object TextUtils {
         }, delayedExecutor(delayMs, TimeUnit.MILLISECONDS))
     }
 
-    fun input(message: String) {
+    suspend fun input(message: String) {
         if (isAnvilInput(null)) {
-            val anvil = MinecraftClient.getInstance().currentScreen as AnvilScreen
-            anvil.screenHandler.setNewItemName(message)
-            MenuUtils.clickMenuSlotWithDelay(100L, MenuUtils.MenuSlot(Items.PAPER, message))
+            val anvil = MC.currentScreen as AnvilScreen
+            if (anvil.screenHandler.setNewItemName(message)) {
+                MC.networkHandler?.sendPacket(RenameItemC2SPacket(message))
+            }
+            MenuUtils.delayClick(anvil, 2, 0, 100L)
         } else {
             sendMessage(message)
         }
     }
 
-    fun input(message: String, delayMs: Long) {
-        runAsync({
-            input(message)
-        }, delayedExecutor(delayMs, TimeUnit.MILLISECONDS))
-    }
-
-    fun previousTextOfInput(delayMs: Long): CompletableFuture<String?> {
-        return supplyAsync<String>({
-            if (isAnvilInput(null)) {
-                val anvil = MinecraftClient.getInstance().currentScreen as AnvilScreen
-                MinecraftClient.getInstance().setScreen(null)
-                anvil.screenHandler.slots[0].stack.name.string
-            } else {
-                if (ChatInput.previousInput != null) {
-                    CommandUtils.runCommand("chatinput cancel")
-
-                    ChatInput.previousInput
-                } else {
-                    CommandUtils.runCommand("chatinput cancel")
-                    null
-                }
-            }
-        }, delayedExecutor(delayMs, TimeUnit.MILLISECONDS))
+    suspend fun input(message: String, delayMs: Long) {
+        delay(delayMs)
+        input(message)
+        delay(50)
     }
 }
