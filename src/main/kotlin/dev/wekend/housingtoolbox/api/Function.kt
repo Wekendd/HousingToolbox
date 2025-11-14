@@ -21,7 +21,7 @@ interface Function {
     suspend fun setAutomaticExecution(newAutomaticExecution: Int)
 
     suspend fun getActions(): List<Action>
-    suspend fun setActions(newActions: List<Action>, optimized: Boolean = false)
+    suspend fun addActions(newActions: List<Action>)
 
     suspend fun delete()
 }

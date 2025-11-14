@@ -9,7 +9,7 @@ import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket
 import kotlin.jvm.optionals.getOrNull
 
 object ItemUtils {
-    fun ItemStack.loreLine(line: Int, color: Boolean, filter: (String) -> Boolean = {true}): String {
+    fun ItemStack.loreLine(line: Int, color: Boolean, filter: (String) -> Boolean = { true }): String {
         val lore = this.get(DataComponentTypes.LORE) ?: return ""
         if (lore.lines.size <= line) return ""
         val loreLine = lore.lines[line]
@@ -17,11 +17,20 @@ object ItemUtils {
         return if (filter(loreString)) loreString else ""
     }
 
-    fun ItemStack.loreLine(color: Boolean, filter: (String) -> Boolean = {true}): String? {
-        val lore = this.get(DataComponentTypes.LORE) ?: return ""
+    fun ItemStack.loreLine(color: Boolean, filter: (String) -> Boolean = { true }): String? {
+        val lore = this.get(DataComponentTypes.LORE) ?: return null
         for (lore in lore.lines) {
             val loreString = TextUtils.convertTextToString(lore, color)
-            return if (filter(loreString)) loreString else null
+            if (filter(loreString)) return loreString
+        }
+        return null
+    }
+
+    fun ItemStack.loreLineWithIndex(color: Boolean, filter: (String) -> Boolean = { true }): Pair<String, Int>? {
+        val lore = this.get(DataComponentTypes.LORE) ?: return null
+        for ((index, lore) in lore.lines.withIndex()) {
+            val loreString = TextUtils.convertTextToString(lore, color)
+            if (filter(loreString)) return Pair(loreString, index)
         }
         return null
     }

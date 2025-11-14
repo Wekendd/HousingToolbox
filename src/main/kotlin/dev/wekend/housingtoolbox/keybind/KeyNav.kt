@@ -4,6 +4,10 @@ import com.github.shynixn.mccoroutine.fabric.launch
 import de.siphalor.amecs.api.KeyModifiers
 import dev.wekend.housingtoolbox.HousingToolbox
 import dev.wekend.housingtoolbox.feature.data.Action
+import dev.wekend.housingtoolbox.feature.data.Location
+import dev.wekend.housingtoolbox.feature.data.StatOp
+import dev.wekend.housingtoolbox.feature.data.StatValue
+import dev.wekend.housingtoolbox.feature.data.Time
 import dev.wekend.housingtoolbox.feature.data.enums.PotionEffect
 import dev.wekend.housingtoolbox.feature.importer.FunctionImporter
 import dev.wekend.housingtoolbox.keybind.KeyBindings.KeySpec
@@ -12,9 +16,6 @@ import dev.wekend.housingtoolbox.util.MenuUtils.clickMenuTargets
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
-import net.minecraft.nbt.NbtCompound
-import net.minecraft.nbt.NbtElement
-import net.minecraft.nbt.NbtIo
 import net.minecraft.nbt.NbtOps
 import org.lwjgl.glfw.GLFW
 import kotlin.jvm.optionals.getOrNull
@@ -66,14 +67,21 @@ object KeyNav {
                         HousingToolbox.launch {
                             println("test keybind pressed")
                             val importer = FunctionImporter("test")
-                            importer.setActions(mutableListOf(
-                                Action.SendMessage("Test Message"),
-                                Action.ApplyPotionEffect(
-                                    PotionEffect.Poison,
-                                    61,
-                                    2,
-                                    override = true,
-                                    showIcon = false
+                            importer.addActions(mutableListOf(
+                                Action.Conditional(
+                                    mutableListOf(),
+                                    false,
+                                    mutableListOf(
+                                        Action.SendMessage("test")
+                                    ),
+                                    mutableListOf(
+                                        Action.ApplyPotionEffect(
+                                            PotionEffect.Poison,
+                                            61,
+                                            2,
+                                            override = false, showIcon = true
+                                        )
+                                    )
                                 )
                             ))
                         }

@@ -4,7 +4,6 @@ import dev.wekend.housingtoolbox.HousingToolbox.MC
 import dev.wekend.housingtoolbox.api.Function
 import dev.wekend.housingtoolbox.feature.data.Action
 import dev.wekend.housingtoolbox.feature.data.ItemStack
-import dev.wekend.housingtoolbox.keybind.KeyNav
 import dev.wekend.housingtoolbox.util.CommandUtils
 import dev.wekend.housingtoolbox.util.ItemUtils
 import dev.wekend.housingtoolbox.util.ItemUtils.loreLine
@@ -12,14 +11,10 @@ import dev.wekend.housingtoolbox.util.MenuUtils
 import dev.wekend.housingtoolbox.util.MenuUtils.MenuSlot
 import dev.wekend.housingtoolbox.util.MenuUtils.Target
 import dev.wekend.housingtoolbox.util.TextUtils
-import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.runBlocking
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen
-import net.minecraft.component.DataComponentTypes
 import net.minecraft.item.Item
 import net.minecraft.item.Items
-import java.awt.Menu
 
 internal class FunctionImporter(override var name: String) : Function {
     private fun isEditMenuOpen(): Boolean {
@@ -124,11 +119,9 @@ internal class FunctionImporter(override var name: String) : Function {
         TODO("Not yet implemented")
     }
 
-    override suspend fun setActions(
-        newActions: List<Action>, optimized: Boolean
-    ) {
+    override suspend fun addActions(newActions: List<Action>) {
         CommandUtils.runCommand("function edit $name")
-        ActionImporter(newActions).import("Actions: $name")
+        ActionImporter("Actions: $name").addActions(newActions)
     }
 
     override suspend fun delete() {

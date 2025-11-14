@@ -63,19 +63,30 @@ object MenuUtils {
         )
     }
 
+    var waitingOn: String? = null
+    var currentScreen: String? = null
+    var attempts: Int = 0
+
     suspend fun onOpen(name: String?): Boolean {
-        var attempts = 0
+        attempts = 0
+        waitingOn = name ?: "null"
         while (true) {
             if (attempts++ >= 50) {
+                waitingOn = null
                 return false
             }
             val gui = MC.currentScreen as? GenericContainerScreen
-            if (gui == null && name == null) return true
+            currentScreen = gui?.title?.string ?: "null"
+            delay(50)
+            if (gui == null && name == null) {
+                waitingOn = null
+                return true
+            }
             if (gui != null && gui.title.string.contains(name ?: "null")) {
+                waitingOn = null
                 return true
             }
 
-            delay(50)
         }
     }
 

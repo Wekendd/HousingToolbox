@@ -84,6 +84,6 @@ object TextUtils {
     suspend fun input(message: String, delayMs: Long) {
         delay(delayMs)
         input(message)
-        delay(50)
+        delay(200)
     }
 }

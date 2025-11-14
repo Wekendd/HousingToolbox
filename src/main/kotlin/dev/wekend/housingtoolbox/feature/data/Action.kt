@@ -99,15 +99,17 @@ sealed class Action(
     @DisplayName("Send to Lobby")
     data class SendToLobby(val location: Lobby) : Action("SEND_TO_LOBBY")
 
+    sealed class ChangeVariable(
+        val holder: VariableHolder
+    ): Action("CHANGE_VARIABLE")
+
     @DisplayName("Change Variable")
     data class PlayerVariable(
         val variable: String,
         val op: StatOp,
         val amount: StatValue,
         val unset: Boolean = false
-    ) : Action("CHANGE_VARIABLE") {
-        val holder = VariableHolder.Player
-    }
+    ) : ChangeVariable(VariableHolder.Player)
 
     @DisplayName("Change Variable")
     data class TeamVariable(
@@ -116,9 +118,7 @@ sealed class Action(
         val op: StatOp,
         val amount: StatValue,
         val unset: Boolean = false
-    ) : Action("CHANGE_VARIABLE") {
-        val holder = VariableHolder.Team
-    }
+    ) : ChangeVariable(VariableHolder.Team)
 
     @DisplayName("Change Variable")
     data class GlobalVariable(
@@ -126,9 +126,7 @@ sealed class Action(
         val op: StatOp,
         val amount: StatValue,
         val unset: Boolean = false
-    ) : Action("CHANGE_VARIABLE") {
-        val holder = VariableHolder.Global
-    }
+    ) : ChangeVariable(VariableHolder.Global)
 
     @DisplayName("Teleport Player")
     data class TeleportPlayer(
@@ -245,6 +243,10 @@ interface Keyed {
     val key: String
 }
 
+annotation class CustomKey
+
+interface KeyedCycle: Keyed
+
 interface KeyedLabeled : Keyed {
     val label: String
 }
@@ -267,9 +269,8 @@ data class ItemStack(
 )
 
 @Serializable
-sealed class Location() {
-
-
+sealed class Location(override val key: String): Keyed {
+    @CustomKey
     class Custom(
         val relX: Boolean,
         val relY: Boolean,
@@ -281,20 +282,33 @@ sealed class Location() {
         val z: Double?,
         val pitch: Float?,
         val yaw: Float?,
-    ) : Location()
+    ) : Location("Custom Coordinates") {
+        override fun toString(): String {
+            val xString = if (relX) "~$x" else x
+            val yString = if (relY) "~$y" else y
+            val zString = if (relZ) "~$z" else z
+            if (pitch != null && yaw != null) {
+                val pitchString = if (relPitch) "~$pitch" else pitch
+                val yawString = if (relYaw) "~$yaw" else yaw
+                return "$xString $yString $zString $pitchString $yawString"
+            } else {
+                return "$xString $yString $zString"
+            }
+        }
+    }
 
 
-    object HouseSpawn : Location()
+    object HouseSpawn : Location("House Spawn Location")
 
 
-    object CurrentLocation : Location()
+    object CurrentLocation : Location("Invokers Location")
 
 
-    object InvokersLocation : Location()
+    object InvokersLocation : Location("Current Location")
 
 }
 
-enum class GameMode(override val key: String) : Keyed {
+enum class GameMode(override val key: String) : KeyedCycle {
     Adventure("Adventure"),
     Survival("Survival"),
     Creative("Creative");
@@ -304,21 +318,19 @@ enum class GameMode(override val key: String) : Keyed {
     }
 }
 
-enum class StatOp {
-    @SerialName("SET")
-    Set,
-
-    @SerialName("INCREMENT")
-    Inc,
-
-    @SerialName("DECREMENT")
-    Dec,
-
-    @SerialName("MULTIPLY")
-    Mul,
-
-    @SerialName("DIVIDE")
-    Div,
+enum class StatOp(override val key: String, val advanced: Boolean = false): Keyed{
+    Set("Set"),
+    UnSet("Unset"),
+    Inc("Increment"),
+    Dec("Decrement"),
+    Mul("Multiply"),
+    Div("Divide"),
+    BitAnd("Bitwise AND", true),
+    BitOr("Bitwise OR", true),
+    BitXor("Bitwise XOR", true),
+    LS("Left Shift", true),
+    ARS("Arithmetic Right Shift", true),
+    LRS("Logical Right Shift", true),
 }
 
 sealed class StatValue {
@@ -336,7 +348,7 @@ sealed class StatValue {
     }
 }
 
-enum class Weather(override val key: String) : Keyed {
+enum class Weather(override val key: String) : KeyedCycle {
     SUNNY("Sunny"),
     RAINY("Rainy");
 
@@ -345,19 +357,24 @@ enum class Weather(override val key: String) : Keyed {
     }
 }
 
-sealed class Time() {
+sealed class Time(override val key: String): Keyed {
+    @CustomKey
     class Custom(
         val time: Long
-    ) : Time()
+    ) : Time("Custom Time") {
+        override fun toString(): String {
+            return time.toString()
+        }
+    }
 
-    object ResetToWorldTime : Time()
-    object Sunrise : Time()
-    object Noon : Time()
-    object Sunset : Time()
-    object Midnight : Time()
+    object ResetToWorldTime : Time("Reset to World Time")
+    object Sunrise : Time("Sunrise")
+    object Noon : Time("Noon")
+    object Sunset : Time("Sunset")
+    object Midnight : Time("Midnight")
 }
 
-enum class VariableHolder(override val key: String) : Keyed {
+enum class VariableHolder(override val key: String) : KeyedCycle {
     Player("Player"),
     Global("Global"),
     Team("Team");

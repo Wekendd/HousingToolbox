@@ -6,6 +6,7 @@
   "client": [
     "menu.AnvilScreenMixin",
     "menu.ScreenCloseMixin",
+    "menu.ScreenRenderMixin",
     "menu.SignScreenMixin"
   ],
   "injectors": {
