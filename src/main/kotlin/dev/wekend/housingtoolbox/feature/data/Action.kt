@@ -14,87 +14,72 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 import net.minecraft.nbt.NbtCompound
 
-/*
-Borrowed from https://github.com/sndyx/hsl, licensed under the MIT License
- */
-
 sealed class Action(
     @Transient val actionName: String = ""
 ) {
-    @Keyword("cancelEvent")
-    class CancelEvent : Action("CANCEL_EVENT")
-
-
+    @DisplayName("Conditional")
     data class Conditional(
         val conditions: List<Condition>,
-        @SerialName("match_any_condition") val matchAnyCondition: Boolean,
-        @SerialName("if_actions") val ifActions: List<Action>,
-        @SerialName("else_actions") val elseActions: List<Action>,
+        val matchAnyCondition: Boolean,
+        val ifActions: List<Action>,
+        val elseActions: List<Action>,
     ) : Action("CONDITIONAL")
 
+    @DisplayName("Cancel Event")
+    class CancelEvent : Action("CANCEL_EVENT")
 
-    @Keyword("changePlayerGroup")
+    @DisplayName("Change Player's Group")
     data class ChangePlayerGroup(
-        @SerialName("new_group") val newGroup: String,
-        @SerialName("include_higher_groups") val includeHigherGroups: Boolean = false,
+        val newGroup: String,
+        val includeHigherGroups: Boolean = false,
     ) : Action("CHANGE_PLAYER_GROUP")
 
-
-    @Keyword("kill")
+    @DisplayName("Kill Player")
     class KillPlayer : Action("KILL")
 
-
-    @Keyword("fullHeal")
+    @DisplayName("Full Heal")
     class FullHeal : Action("FULL_HEAL")
 
-
-    @Keyword("title")
+    @DisplayName("Display Title")
     data class DisplayTitle(
         val title: String,
         val subtitle: String,
-        @SerialName("fade_in") val fadeIn: Int,
+        val fadeIn: Int,
         val stay: Int,
-        @SerialName("fade_out") val fadeOut: Int,
+        val fadeOut: Int,
     ) : Action("TITLE")
 
-
-    @Keyword("actionBar")
+    @DisplayName("Display Action Bar")
     data class DisplayActionBar(val message: String) : Action("ACTION_BAR")
 
-
-    @Keyword("resetInventory")
+    @DisplayName("Reset Inventory")
     class ResetInventory : Action("RESET_INVENTORY")
 
-
-    @Keyword("changeMaxHealth")
+    @DisplayName("Change Max Health")
     data class ChangeMaxHealth(
-        @SerialName("mode") val op: StatOp,
+        val op: StatOp,
         val amount: StatValue,
         val healOnChange: Boolean = true,
     ) : Action("CHANGE_MAX_HEALTH")
 
-    @Keyword("parkCheck")
+    @DisplayName("Parkour Checkpoint")
     class ParkourCheckpoint : Action("PARKOUR_CHECKPOINT")
 
-
-    @Keyword("giveItem")
+    @DisplayName("Give Item")
     data class GiveItem(
         val item: ItemStack,
-        @SerialName("allow_multiple") val allowMultiple: Boolean,
-        @SerialName("inventory_slot") val inventorySlot: StatValue,
-        @SerialName("replace_existing_item") val replaceExistingItem: Boolean,
+        val allowMultiple: Boolean,
+        val inventorySlot: StatValue,
+        val replaceExistingItem: Boolean,
     ) : Action("GIVE_ITEM")
 
-
-    @Keyword("removeItem")
+    @DisplayName("Remove Item")
     data class RemoveItem(val item: ItemStack) : Action("REMOVE_ITEM")
 
-
-    @Keyword("chat")
+    @DisplayName("Send a Chat Message")
     data class SendMessage(val message: String) : Action("SEND_MESSAGE")
 
-
-    @Keyword("applyPotion")
+    @DisplayName("Apply Potion Effect")
     data class ApplyPotionEffect(
         val effect: PotionEffect,
         val duration: Int,
@@ -105,21 +90,16 @@ sealed class Action(
         val showIcon: Boolean,
     ) : Action("POTION_EFFECT")
 
-
-    @Keyword("clearEffects")
+    @DisplayName("Clear All Potion Effects")
     class ClearAllPotionEffects : Action("CLEAR_EFFECTS")
 
-
-    @Keyword("xpLevel")
+    @DisplayName("Give Experience Levels")
     data class GiveExperienceLevels(val levels: Int) : Action("GIVE_EXP_LEVELS")
 
-
-    @Keyword("lobby")
+    @DisplayName("Send to Lobby")
     data class SendToLobby(val location: Lobby) : Action("SEND_TO_LOBBY")
 
-
-    @Keyword("var")
-    @Keyword("stat")
+    @DisplayName("Change Variable")
     data class PlayerVariable(
         val variable: String,
         val op: StatOp,
@@ -129,8 +109,7 @@ sealed class Action(
         val holder = VariableHolder.Player
     }
 
-    @Keyword("teamvar")
-    @Keyword("teamstat")
+    @DisplayName("Change Variable")
     data class TeamVariable(
         val teamName: String,
         val variable: String,
@@ -141,8 +120,7 @@ sealed class Action(
         val holder = VariableHolder.Team
     }
 
-    @Keyword("globalvar")
-    @Keyword("globalstat")
+    @DisplayName("Change Variable")
     data class GlobalVariable(
         val variable: String,
         val op: StatOp,
@@ -152,19 +130,16 @@ sealed class Action(
         val holder = VariableHolder.Global
     }
 
-
-    @Keyword("tp")
+    @DisplayName("Teleport Player")
     data class TeleportPlayer(
         val location: Location,
-        @SerialName("prevent_teleport_inside_blocks") val preventInsideBlocks: Boolean,
+        val preventInsideBlocks: Boolean,
     ) : Action("TELEPORT_PLAYER")
 
-
-    @Keyword("failParkour")
+    @DisplayName("Fail Parkour")
     data class FailParkour(val reason: String) : Action("FAIL_PARKOUR")
 
-
-    @Keyword("sound")
+    @DisplayName("Play Sound")
     data class PlaySound(
         val sound: Sound,
         val volume: Double,
@@ -172,116 +147,97 @@ sealed class Action(
         val location: Location,
     ) : Action("PLAY_SOUND")
 
-
-    @Keyword("compassTarget")
+    @DisplayName("Set Compass Target")
     data class SetCompassTarget(val location: Location) : Action("SET_COMPASS_TARGET")
 
-
-    @Keyword("gamemode")
+    @DisplayName("Set Gamemode")
     data class SetGameMode(val gamemode: GameMode) : Action("SET_GAMEMODE")
 
-
-    @Keyword("changeHealth")
+    @DisplayName("Change Health")
     data class ChangeHealth(
-        @SerialName("mode") val op: StatOp,
+        val op: StatOp,
         val amount: StatValue,
     ) : Action("CHANGE_HEALTH")
 
-
-    @Keyword("changeHunger")
+    @DisplayName("Change Hunger Level")
     data class ChangeHunger(
-        @SerialName("mode") val op: StatOp,
+        val op: StatOp,
         val amount: StatValue,
     ) : Action("CHANGE_HUNGER")
 
+    @DisplayName("Use/Remove Held Item")
+    class UseHeldItem : Action("USE_HELD_ITEM")
 
-    @Keyword("function")
+    @DisplayName("Random Action")
+    data class RandomAction(
+        val actions: List<Action>,
+    ) : Action("RANDOM_ACTION")
+
+    @DisplayName("Trigger Function")
     data class ExecuteFunction(val name: String, val global: Boolean) : Action("TRIGGER_FUNCTION")
 
-
-    @Keyword("applyLayout")
+    @DisplayName("Apply Inventory Layout")
     data class ApplyInventoryLayout(val layout: String) : Action("APPLY_LAYOUT")
 
-
-    @Keyword("exit")
+    @DisplayName("Exit")
     class Exit : Action("EXIT")
-
-
-    @Keyword("enchant")
+    
+    @DisplayName("Enchant Held Item")
     data class EnchantHeldItem(
         val enchantment: Enchantment,
         val level: Int,
     ) : Action("ENCHANT_HELD_ITEM")
+    
+    @DisplayName("Pause Execution")
+    data class PauseExecution(val ticks: Int) : Action("PAUSE")
 
-
-    @Keyword("pause")
-    data class PauseExecution(@SerialName("ticks_to_wait") val ticks: Int) : Action("PAUSE")
-
-
-    @Keyword("setTeam")
+    @DisplayName("Set Player Team")
     data class SetPlayerTeam(val team: String) : Action("SET_PLAYER_TEAM")
 
-
-    @Keyword("displayMenu")
+    @DisplayName("Display Menu")
     data class DisplayMenu(val menu: String) : Action("DISPLAY_MENU")
 
+    @DisplayName("Close Menu")
+    class CloseMenu : Action("CLOSE_MENU")
 
-    @Keyword("dropItem")
+    @DisplayName("Drop Item")
     data class DropItem(
         val item: ItemStack,
         val location: Location,
-        @SerialName("drop_naturally") val dropNaturally: Boolean,
-        @SerialName("prevent_item_merging") val disableMerging: Boolean,
-        @SerialName("prioritize_player") val prioritizePlayer: Boolean,
-        @SerialName("fallback_to_inventory") val inventoryFallback: Boolean,
-        @SerialName("despawn_duraction_ticks") val despawnDurationTicks: Int,
-        @SerialName("pickup_delay_ticks") val pickupDelayTicks: Int,
+        val dropNaturally: Boolean,
+        val disableMerging: Boolean,
+        val prioritizePlayer: Boolean,
+        val inventoryFallback: Boolean,
+        val despawnDurationTicks: Int,
+        val pickupDelayTicks: Int,
     ) : Action("DROP_ITEM")
 
-
-    @Keyword("changeVelocity")
+    @DisplayName("Change Velocity")
     data class ChangeVelocity(
         val x: StatValue,
         val y: StatValue,
         val z: StatValue,
     ) : Action("CHANGE_VELOCITY")
 
-
-    @Keyword("launchTarget")
+    @DisplayName("Launch to Target")
     data class LaunchToTarget(
         val location: Location,
         val strength: StatValue
     ) : Action("LAUNCH_TO_TARGET")
 
-
-    @Keyword("playerWeather")
+    @DisplayName("Set Player Weather")
     data class SetPlayerWeather(val weather: Weather) : Action("SET_PLAYER_WEATHER")
 
-
-    @Keyword("playerTime")
+    @DisplayName("Set Player Time")
     data class SetPlayerTime(val time: Time) : Action("SET_PLAYER_TIME")
 
-
-    @Keyword("displayNametag")
-    data class ToggleNametagDisplay(@SerialName("display_nametag") val displayNametag: Boolean) :
+    @DisplayName("Toggle Nametag Display")
+    data class ToggleNametagDisplay(val displayNametag: Boolean) :
         Action("TOGGLE_NAMETAG_DISPLAY")
 
-
-    @Keyword("balanceTeam")
+    @DisplayName("Balance Player Team")
     class BalancePlayerTeam : Action("BALANCE_PLAYER_TEAM")
 
-
-    @Keyword("closeMenu")
-    class CloseMenu : Action("CLOSE_MENU")
-
-
-    data class RandomAction(
-        val actions: List<Action>,
-    ) : Action("RANDOM_ACTION")
-
-
-    @Keyword("consumeItem")
-    class UseHeldItem : Action("USE_HELD_ITEM")
 
 }
 
@@ -366,9 +322,18 @@ enum class StatOp {
 }
 
 sealed class StatValue {
-    data class I64(val value: Long) : StatValue()
-    data class Dbl(val value: Double) : StatValue()
-    data class Str(val value: String) : StatValue()
+    data class Lng(val value: Long) : StatValue() {
+        override fun toString() = value.toString() + "L"
+    }
+    data class I32(val value: Int) : StatValue() {
+        override fun toString() = value.toString()
+    }
+    data class Dbl(val value: Double) : StatValue() {
+        override fun toString() = value.toString()
+    }
+    data class Str(val value: String) : StatValue() {
+        override fun toString() = value
+    }
 }
 
 enum class Weather(override val key: String) : Keyed {

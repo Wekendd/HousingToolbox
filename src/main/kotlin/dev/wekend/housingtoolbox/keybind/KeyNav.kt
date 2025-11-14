@@ -3,6 +3,8 @@ package dev.wekend.housingtoolbox.keybind
 import com.github.shynixn.mccoroutine.fabric.launch
 import de.siphalor.amecs.api.KeyModifiers
 import dev.wekend.housingtoolbox.HousingToolbox
+import dev.wekend.housingtoolbox.feature.data.Action
+import dev.wekend.housingtoolbox.feature.data.enums.PotionEffect
 import dev.wekend.housingtoolbox.feature.importer.FunctionImporter
 import dev.wekend.housingtoolbox.keybind.KeyBindings.KeySpec
 import dev.wekend.housingtoolbox.util.MenuUtils
@@ -63,14 +65,17 @@ object KeyNav {
                     onPress = {
                         HousingToolbox.launch {
                             println("test keybind pressed")
-                            val importer = FunctionImporter("test2")
-                            importer.createIfNotExists()
-                            importer.setName("test")
-                            val stack = Items.DIAMOND.defaultStack
-                            val result = ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, stack).result().getOrNull()?.asCompound()?.getOrNull() ?: return@launch
-                            importer.setIcon(
-                                dev.wekend.housingtoolbox.feature.data.ItemStack(result, "")
-                            )
+                            val importer = FunctionImporter("test")
+                            importer.setActions(mutableListOf(
+                                Action.SendMessage("Test Message"),
+                                Action.ApplyPotionEffect(
+                                    PotionEffect.Poison,
+                                    61,
+                                    2,
+                                    override = true,
+                                    showIcon = false
+                                )
+                            ))
                         }
                         true
                     }

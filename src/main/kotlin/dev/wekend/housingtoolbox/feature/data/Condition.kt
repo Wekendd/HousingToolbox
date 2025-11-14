@@ -18,7 +18,6 @@ sealed class Condition(
 ) {
     var inverted = false
 
-    @Keyword("hasGroup")
     data class RequiredGroup(
         @SerialName("required_group")
         val group: String,
@@ -26,8 +25,6 @@ sealed class Condition(
         val includeHigherGroups: Boolean,
     ) : Condition("IN_GROUP")
 
-    @Keyword("var")
-    @Keyword("stat")
     data class PlayerVariableRequirement(
         val variable: String,
         val op: Comparison,
@@ -36,8 +33,6 @@ sealed class Condition(
         val holder = VariableHolder.Player
     }
 
-    @Keyword("teamvar")
-    @Keyword("teamstat")
     data class TeamVariableRequirement(
         val team: String?,
         val variable: String,
@@ -47,8 +42,6 @@ sealed class Condition(
         val holder = VariableHolder.Team
     }
 
-    @Keyword("globalvar")
-    @Keyword("globalstat")
     data class GlobalVariableRequirement(
         val variable: String,
         val op: Comparison,
@@ -57,109 +50,89 @@ sealed class Condition(
         val holder = VariableHolder.Global
     }
 
-    @Keyword("hasPermission")
     data class HasPermission(
         @SerialName("required_permission")
         val permission: Permission,
     ) : Condition("HAS_PERMISSION")
-    
-    @Keyword("inRegion")
+
     data class InRegion(
         val region: String,
     ) : Condition("IN_REGION")
-    
-    @Keyword("hasItem")
+
     data class HasItem(
         val item: ItemStack,
         @SerialName("what_to_check") val whatToCheck: ItemCheck,
         @SerialName("where_to_check") val whereToCheck: InventoryLocation,
         @SerialName("required_amount") val amount: ItemAmount,
     ) : Condition("HAS_ITEM")
-    
-    @Keyword("doingParkour")
+
     data object InParkour : Condition("IN_PARKOUR")
-    
-    @Keyword("hasPotion")
+
     data class RequiredEffect(
         val effect: PotionEffect,
     ) : Condition("POTION_EFFECT")
-    
-    @Keyword("isSneaking")
+
     data object PlayerSneaking : Condition("SNEAKING")
-    
-    @Keyword("isFlying")
+
     data object PlayerFlying : Condition("FLYING")
-    
-    @Keyword("health")
+
     data class RequiredHealth(
         val mode: Comparison,
         val amount: StatValue,
     ) : Condition("HEALTH")
-    
-    @Keyword("maxHealth")
+
     data class RequiredMaxHealth(
         val mode: Comparison,
         val amount: StatValue,
     ) : Condition("MAX_HEALTH")
-    
-    @Keyword("hunger")
+
     data class RequiredHungerLevel(
         val mode: Comparison,
         val amount: StatValue,
     ) : Condition("HUNGER_LEVEL")
-    
-    @Keyword("gamemode")
+
     data class RequiredGameMode(
         @SerialName("required_gamemode")
         val gameMode: GameMode
     ) : Condition("GAMEMODE")
-    
-    @Keyword("placeholder")
+
     data class RequiredPlaceholderNumber(
         val placeholder: String,
         val mode: Comparison,
         val amount: StatValue,
     ) : Condition("PLACEHOLDER_NUMBER")
-    
-    @Keyword("inTeam")
+
     data class RequiredTeam(
         @SerialName("required_team")
         val team: String,
     ) : Condition("IN_TEAM")
-    
-    @Keyword("canPvp")
+
     data object PvpEnabled : Condition("PVP_ENABLED")
-    
-    @Keyword("fishingEnv")
+
     data class FishingEnvironment(
         val environment: dev.wekend.housingtoolbox.feature.data.FishingEnvironment
     ) : Condition("FISHING_ENVIRONMENT")
-    
-    @Keyword("portal")
+
     data class PortalType(
         @SerialName("portal_type")
         val type: dev.wekend.housingtoolbox.feature.data.PortalType
     ) : Condition("PORTAL_TYPE")
-    
-    @Keyword("damageCause")
+
     data class DamageCause(
         val cause: dev.wekend.housingtoolbox.feature.data.DamageCause
     ) : Condition("DAMAGE_CAUSE")
-    
-    @Keyword("damageAmount")
+
     data class RequiredDamageAmount(
         val mode: Comparison,
         val amount: StatValue,
     ) : Condition("DAMAGE_AMOUNT")
-    
-    @Keyword("blockType")
+
     data class BlockType(
         val item: ItemStack,
         @SerialName("match_type_only")
         val matchTypeOnly: Boolean,
     ) : Condition("BLOCK_TYPE")
-    
-    @Keyword("isItem")
+
     data class IsItem(
         val item: ItemStack,
         @SerialName("what_to_check") val whatToCheck: ItemCheck,
@@ -169,11 +142,16 @@ sealed class Condition(
 }
 
 enum class Comparison {
-    @SerialName("EQUAL") Eq,
-    @SerialName("GREATER_THAN") Gt,
-    @SerialName("GREATER_THAN_OR_EQUAL") Ge,
-    @SerialName("LESS_THAN") Lt,
-    @SerialName("LESS_THAN_OR_EQUAL") Le;
+    @SerialName("EQUAL")
+    Eq,
+    @SerialName("GREATER_THAN")
+    Gt,
+    @SerialName("GREATER_THAN_OR_EQUAL")
+    Ge,
+    @SerialName("LESS_THAN")
+    Lt,
+    @SerialName("LESS_THAN_OR_EQUAL")
+    Le;
 }
 
 enum class ItemCheck(override val key: String) : Keyed {
@@ -246,7 +224,7 @@ enum class DamageCause(override val key: String) : Keyed {
     Starvation("Starvation"),
     Poison("Poison"),
     Thorns("Thorns");
-    
+
     companion object {
         fun fromKey(key: String): DamageCause? {
             return entries.find { it.key.equals(key, ignoreCase = true) }

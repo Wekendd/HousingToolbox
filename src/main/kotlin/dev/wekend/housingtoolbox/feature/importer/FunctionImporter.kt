@@ -37,7 +37,7 @@ internal class FunctionImporter(override var name: String) : Function {
             CommandUtils.runCommand("functions")
             MenuUtils.onOpen("Functions")
 
-            if (!MenuUtils.clickMenuTargets(Target(MenuSlot(null, name), 1))) {
+            if (!MenuUtils.clickMenuTargetPaginated(Target(MenuSlot(null, name), 1))) {
                 return false
             }
             MenuUtils.onOpen("Edit: $name")
@@ -127,10 +127,13 @@ internal class FunctionImporter(override var name: String) : Function {
     override suspend fun setActions(
         newActions: List<Action>, optimized: Boolean
     ) {
-        TODO("Not yet implemented")
+        CommandUtils.runCommand("function edit $name")
+        ActionImporter(newActions).import("Actions: $name")
     }
 
     override suspend fun delete() {
+        openFunctionEditMenu()
+
         MenuUtils.clickMenuSlot(MenuItems.DELETE_FUNCTION)
         MenuUtils.onOpen("Are you sure?")
         MenuUtils.clickMenuSlot(MenuItems.CONFIRM)

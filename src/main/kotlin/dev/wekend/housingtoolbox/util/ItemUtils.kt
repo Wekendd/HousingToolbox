@@ -1,16 +1,11 @@
 package dev.wekend.housingtoolbox.util
 
-import kotlinx.serialization.encodeToString
 import net.minecraft.client.MinecraftClient
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.item.ItemStack
-import net.minecraft.nbt.NbtByte
 import net.minecraft.nbt.NbtCompound
-import net.minecraft.nbt.NbtIo
 import net.minecraft.nbt.NbtOps
-import net.minecraft.nbt.NbtSizeTracker
 import net.minecraft.network.packet.c2s.play.CreativeInventoryActionC2SPacket
-import java.io.DataInputStream
 import kotlin.jvm.optionals.getOrNull
 
 object ItemUtils {
@@ -20,6 +15,15 @@ object ItemUtils {
         val loreLine = lore.lines[line]
         val loreString = TextUtils.convertTextToString(loreLine, color)
         return if (filter(loreString)) loreString else ""
+    }
+
+    fun ItemStack.loreLine(color: Boolean, filter: (String) -> Boolean = {true}): String? {
+        val lore = this.get(DataComponentTypes.LORE) ?: return ""
+        for (lore in lore.lines) {
+            val loreString = TextUtils.convertTextToString(lore, color)
+            return if (filter(loreString)) loreString else null
+        }
+        return null
     }
 
     fun createFromNBT(nbt: NbtCompound): ItemStack {

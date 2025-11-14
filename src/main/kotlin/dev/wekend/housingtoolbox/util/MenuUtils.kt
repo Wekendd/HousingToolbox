@@ -9,6 +9,7 @@ import net.minecraft.client.gui.screen.ingame.GenericContainerScreen
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.item.Item
+import net.minecraft.item.Items
 import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket
 import net.minecraft.screen.slot.Slot
 import net.minecraft.screen.slot.SlotActionType
@@ -31,7 +32,7 @@ object MenuUtils {
 
     fun findSlot(gui: GenericContainerScreen, item: Item?, name: String?, slot: Int?): Slot? {
         if (slot != null) {
-            val s = gui.screenHandler.slots[slot]
+            val s = gui.screenHandler.getSlot(slot)
             return when {
                 name == null && item == null -> s
                 name == null && s.stack.item == item -> s
@@ -62,14 +63,15 @@ object MenuUtils {
         )
     }
 
-    suspend fun onOpen(name: String): Boolean {
+    suspend fun onOpen(name: String?): Boolean {
         var attempts = 0
         while (true) {
             if (attempts++ >= 50) {
                 return false
             }
             val gui = MC.currentScreen as? GenericContainerScreen
-            if (gui != null && gui.title.string.contains(name)) {
+            if (gui == null && name == null) return true
+            if (gui != null && gui.title.string.contains(name ?: "null")) {
                 return true
             }
 
@@ -104,6 +106,30 @@ object MenuUtils {
             true
         }
 
+    suspend fun clickMenuTargetPaginated(vararg attempts: Target): Boolean {
+        return withContainer { gui ->
+            val match = attempts.firstNotNullOfOrNull {
+                val slot = findSlot(gui, it.menuSlot)
+                if (slot != null) it to slot else null
+            }
+
+            if (match == null) {
+                val nextPageSlot = findSlot(gui, GlobalMenuItems.NEXT_PAGE)
+                if (nextPageSlot != null) {
+                    clickMenuSlot(GlobalMenuItems.NEXT_PAGE)
+                    delay(100)
+                    if (clickMenuTargetPaginated(*attempts)) {
+                        return true
+                    }
+                }
+                false
+            } else {
+                click(gui, match.second.id, match.first.button)
+                true
+            }
+        }
+    }
+
     fun clickPlayerSlot(slot: Int, button: Int = 0) =
         withContainer { gui ->
             val playerSlot = slot + gui.screenHandler.slots.size - 45
@@ -119,5 +145,9 @@ object MenuUtils {
             delay(delayMs)
             clickPlayerSlot(slot, button)
         }
+    }
+
+    object GlobalMenuItems {
+        val NEXT_PAGE = MenuSlot(Items.ARROW, "Left-click for next page!")
     }
 }

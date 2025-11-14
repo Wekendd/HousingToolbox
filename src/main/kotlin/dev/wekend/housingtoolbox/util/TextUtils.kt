@@ -76,6 +76,7 @@ object TextUtils {
             }
             MenuUtils.delayClick(anvil, 2, 0, 100L)
         } else {
+            MenuUtils.onOpen(null)
             sendMessage(message)
         }
     }
