@@ -1,6 +1,6 @@
 package dev.wekend.housingtoolbox.api.npc
 
-interface OcelotNpc: AnimalNpc {
+interface OcelotNpc: AgedNpc {
     suspend fun getOcelotType(): OcelotType
     suspend fun setOcelotType(newOcelotType: OcelotType)
 

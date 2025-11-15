@@ -1,6 +1,6 @@
 package dev.wekend.housingtoolbox.api.npc
 
-interface AnimalNpc: Npc {
+interface AgedNpc: Npc {
     suspend fun getAge(): Age
     suspend fun setAge(newAge: Age)
 

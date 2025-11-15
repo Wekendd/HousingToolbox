@@ -1,6 +1,6 @@
 package dev.wekend.housingtoolbox.api.npc
 
-interface SheepNpc: AnimalNpc {
+interface SheepNpc: AgedNpc {
     suspend fun getWoolColor(): WoolColor
     suspend fun setWoolColor(newWoolColor: WoolColor)
 

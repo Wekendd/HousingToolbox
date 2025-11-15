@@ -1,6 +1,6 @@
 package dev.wekend.housingtoolbox.api.npc
 
-interface VillagerNpc: AnimalNpc {
+interface VillagerNpc: AgedNpc {
     suspend fun getProfession(): VillagerProfession
     suspend fun setProfession(newProfession: VillagerProfession)
 

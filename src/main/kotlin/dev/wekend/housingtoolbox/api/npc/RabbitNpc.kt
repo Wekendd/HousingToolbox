@@ -1,6 +1,6 @@
 package dev.wekend.housingtoolbox.api.npc
 
-interface RabbitNpc: AnimalNpc {
+interface RabbitNpc: AgedNpc {
     suspend fun getRabbitType(): RabbitType
     suspend fun setRabbitType(newRabbitType: RabbitType)
 

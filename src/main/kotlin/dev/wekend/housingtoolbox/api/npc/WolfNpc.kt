@@ -1,6 +1,6 @@
 package dev.wekend.housingtoolbox.api.npc
 
-interface WolfNpc: AnimalNpc {
+interface WolfNpc: AgedNpc {
     suspend fun getColarColor(): ColarColor
     suspend fun setColarColor(newColarColor: ColarColor)
 
