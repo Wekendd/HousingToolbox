@@ -4,6 +4,7 @@ import dev.wekend.housingtoolbox.HousingToolbox.MC
 import dev.wekend.housingtoolbox.api.Command
 import dev.wekend.housingtoolbox.feature.data.Action
 import dev.wekend.housingtoolbox.util.CommandUtils
+import dev.wekend.housingtoolbox.util.CommandUtils.getTabCompletionData
 import dev.wekend.housingtoolbox.util.ItemUtils.loreLine
 import dev.wekend.housingtoolbox.util.MenuUtils
 import dev.wekend.housingtoolbox.util.MenuUtils.MenuSlot
@@ -23,22 +24,20 @@ internal class CommandImporter(override var name: String) : Command {
         return container.title.string.contains("Actions: /$name")
     }
 
-    private suspend fun openCommandEditMenu(): Boolean {
-        if (!isCommandEditMenuOpen()) {
-            CommandUtils.runCommand("command edit $name")
-            MenuUtils.onOpen("Edit /$name")
-            delay(50)
-        }
-        return true
+    private suspend fun openCommandEditMenu() {
+        if (isCommandEditMenuOpen()) return
+
+        CommandUtils.runCommand("command edit $name")
+        MenuUtils.onOpen("Edit /$name")
+        delay(50)
     }
 
-    private suspend fun openActionsEditMenu(): Boolean {
-        if (!isActionsMenuOpen()) {
-            CommandUtils.runCommand("command actions $name")
-            MenuUtils.onOpen("Actions: /$name")
-            delay(50)
-        }
-        return true
+    private suspend fun openActionsEditMenu() {
+        if (isActionsMenuOpen()) return
+
+        CommandUtils.runCommand("command actions $name")
+        MenuUtils.onOpen("Actions: /$name")
+        delay(50)
     }
 
     override suspend fun setName(newName: String) {
@@ -50,13 +49,12 @@ internal class CommandImporter(override var name: String) : Command {
         name = newName
     }
 
-    override suspend fun createIfNotExists() {
-        if (!openCommandEditMenu()) {
-            CommandUtils.runCommand("command create $name")
-            MenuUtils.onOpen("Actions: /$name")
-            MenuUtils.clickMenuSlot(MenuItems.BACK)
-            delay(100)
-        }
+    override suspend fun createIfNotExists(): Boolean {
+        val commands = getTabCompletionData("command edit")
+        if (commands.contains(name)) return false
+
+        CommandUtils.runCommand("command create $name")
+        return true
     }
 
     override suspend fun getCommandMode(): Command.CommandMode {
@@ -66,6 +64,7 @@ internal class CommandImporter(override var name: String) : Command {
         val slot = MenuUtils.findSlot(gui, MenuItems.TOGGLE_COMMAND_MODE) ?: return Command.CommandMode.TARGETED // FIXME
         val loreLine = slot.stack.loreLine(1, false)
         val part = loreLine.split(" ")[1]
+
         return if (part == "Self") Command.CommandMode.SELF else Command.CommandMode.TARGETED
     }
 
@@ -77,7 +76,9 @@ internal class CommandImporter(override var name: String) : Command {
         val loreLine = slot.stack.loreLine(1, false)
         val part = loreLine.split(" ")[1]
         val value = if (part == "Self") Command.CommandMode.SELF else Command.CommandMode.TARGETED
-        if (newCommandMode != value) MenuUtils.clickMenuSlot(MenuItems.TOGGLE_COMMAND_MODE)
+        if (value == newCommandMode) return
+
+        MenuUtils.clickMenuSlot(MenuItems.TOGGLE_COMMAND_MODE)
     }
 
     override suspend fun getRequiredGroupPriority(): Int {

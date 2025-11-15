@@ -32,9 +32,8 @@ internal class FunctionImporter(override var name: String) : Function {
             CommandUtils.runCommand("functions")
             MenuUtils.onOpen("Functions")
 
-            if (!MenuUtils.clickMenuTargetPaginated(Target(MenuSlot(null, name), 1))) {
-                return false
-            }
+            if (!MenuUtils.clickMenuTargetPaginated(Target(MenuSlot(null, name), 1))) return false
+
             MenuUtils.onOpen("Edit: $name")
             delay(50)
         }

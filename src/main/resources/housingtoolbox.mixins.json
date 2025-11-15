@@ -4,7 +4,7 @@
   "package": "dev.wekend.housingtoolbox.mixins",
   "compatibilityLevel": "JAVA_21",
   "client": [
-    "menu.AnvilScreenMixin",
+    "menu.ClientPlayNetworkHandlerMixin",
     "menu.ScreenCloseMixin",
     "menu.ScreenRenderMixin",
     "menu.SignScreenMixin"
