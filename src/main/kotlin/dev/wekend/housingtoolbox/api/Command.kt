@@ -8,6 +8,8 @@ interface Command {
     suspend fun getName(): String = name
     suspend fun setName(newName: String)
 
+    suspend fun createIfNotExists()
+
     suspend fun getCommandMode(): CommandMode
     suspend fun setCommandMode(newCommandMode: CommandMode)
 

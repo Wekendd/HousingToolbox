@@ -17,7 +17,7 @@ import net.minecraft.item.Item
 import net.minecraft.item.Items
 
 internal class FunctionImporter(override var name: String) : Function {
-    private fun isEditMenuOpen(): Boolean {
+    private fun isFunctionEditMenuOpen(): Boolean {
         val container = MC.currentScreen as? GenericContainerScreen ?: return false
         return container.title.string.contains("Edit: $name")
     }
@@ -28,7 +28,7 @@ internal class FunctionImporter(override var name: String) : Function {
     }
 
     private suspend fun openFunctionEditMenu(): Boolean {
-        if (!isEditMenuOpen()) {
+        if (!isFunctionEditMenuOpen()) {
             CommandUtils.runCommand("functions")
             MenuUtils.onOpen("Functions")
 
@@ -36,6 +36,15 @@ internal class FunctionImporter(override var name: String) : Function {
                 return false
             }
             MenuUtils.onOpen("Edit: $name")
+            delay(50)
+        }
+        return true
+    }
+
+    private suspend fun openActionsEditMenu(): Boolean {
+        if (!isActionsMenuOpen()) {
+            CommandUtils.runCommand("function edit $name")
+            MenuUtils.onOpen("Actions: $name")
             delay(50)
         }
         return true
@@ -62,9 +71,9 @@ internal class FunctionImporter(override var name: String) : Function {
     override suspend fun getDescription(): String {
         openFunctionEditMenu()
 
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return ""
+        val gui = MC.currentScreen as? GenericContainerScreen ?: return "" // FIXME
 
-        val slot = MenuUtils.findSlot(gui, MenuItems.SET_DESCRIPTION) ?: return ""
+        val slot = MenuUtils.findSlot(gui, MenuItems.SET_DESCRIPTION) ?: return "" // FIXME
         return slot.stack.loreLine(2, true, LoreFilters.RENAME_LORE_FILTER)
     }
 
@@ -78,9 +87,9 @@ internal class FunctionImporter(override var name: String) : Function {
     override suspend fun getIcon(): Item {
         openFunctionEditMenu()
 
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return Items.AIR
+        val gui = MC.currentScreen as? GenericContainerScreen ?: return Items.AIR // FIXME
 
-        val slot = MenuUtils.findSlot(gui, MenuItems.EDIT_ICON) ?: return Items.AIR
+        val slot = MenuUtils.findSlot(gui, MenuItems.EDIT_ICON) ?: return Items.AIR // FIXME
         return slot.stack.item
     }
 
@@ -99,13 +108,13 @@ internal class FunctionImporter(override var name: String) : Function {
     override suspend fun getAutomaticExecution(): Int {
         openFunctionEditMenu()
 
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return 0
+        val gui = MC.currentScreen as? GenericContainerScreen ?: return 0 // FIXME
 
-        val slot = MenuUtils.findSlot(gui, MenuItems.AUTOMATIC_EXECUTION) ?: return 0
+        val slot = MenuUtils.findSlot(gui, MenuItems.AUTOMATIC_EXECUTION) ?: return 0 // FIXME
         val loreLine = slot.stack.loreLine(5, false)
         val part = loreLine.split(" ")[1]
         if (part == "Disabled") return 0
-        return part.toIntOrNull() ?: 0
+        return part.toIntOrNull() ?: 0 // FIXME
     }
 
     override suspend fun setAutomaticExecution(newAutomaticExecution: Int) {
