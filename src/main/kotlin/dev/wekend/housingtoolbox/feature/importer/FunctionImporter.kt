@@ -72,13 +72,17 @@ internal class FunctionImporter(override var name: String) : Function {
         openFunctionEditMenu()
 
         val gui = MC.currentScreen as? GenericContainerScreen ?: return "" // FIXME
-
         val slot = MenuUtils.findSlot(gui, MenuItems.SET_DESCRIPTION) ?: return "" // FIXME
         return slot.stack.loreLine(2, true, LoreFilters.RENAME_LORE_FILTER)
     }
 
     override suspend fun setDescription(newDescription: String) {
         openFunctionEditMenu()
+
+        val gui = MC.currentScreen as? GenericContainerScreen ?: return // FIXME
+        val slot = MenuUtils.findSlot(gui, MenuItems.SET_DESCRIPTION) ?: return // FIXME
+        val value = slot.stack.loreLine(2, true, LoreFilters.RENAME_LORE_FILTER)
+        if (value == newDescription) return
 
         MenuUtils.clickMenuSlot(MenuItems.SET_DESCRIPTION)
         TextUtils.input(newDescription, 100L)
@@ -109,16 +113,22 @@ internal class FunctionImporter(override var name: String) : Function {
         openFunctionEditMenu()
 
         val gui = MC.currentScreen as? GenericContainerScreen ?: return 0 // FIXME
-
         val slot = MenuUtils.findSlot(gui, MenuItems.AUTOMATIC_EXECUTION) ?: return 0 // FIXME
         val loreLine = slot.stack.loreLine(5, false)
         val part = loreLine.split(" ")[1]
-        if (part == "Disabled") return 0
-        return part.toIntOrNull() ?: 0 // FIXME
+
+        return if (part == "Disabled") 0 else part.toIntOrNull() ?: 0 // FIXME
     }
 
     override suspend fun setAutomaticExecution(newAutomaticExecution: Int) {
         openFunctionEditMenu()
+
+        val gui = MC.currentScreen as? GenericContainerScreen ?: return // FIXME
+        val slot = MenuUtils.findSlot(gui, MenuItems.AUTOMATIC_EXECUTION) ?: return // FIXME
+        val loreLine = slot.stack.loreLine(5, false)
+        val part = loreLine.split(" ")[1]
+        val value = if (part == "Disabled") 0 else part.toIntOrNull() ?: 0 // FIXME
+        if (value == newAutomaticExecution) return
 
         MenuUtils.clickMenuSlot(MenuItems.AUTOMATIC_EXECUTION)
         TextUtils.input(newAutomaticExecution.toString(), 100L)
