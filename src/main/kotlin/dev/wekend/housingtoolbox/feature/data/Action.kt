@@ -87,7 +87,7 @@ sealed class Action(
         @SerialName("override_existing_effects")
         val override: Boolean,
         @SerialName("show_potion_icon")
-        val showIcon: Boolean,
+        val showIcon: Boolean = false,
     ) : Action("POTION_EFFECT")
 
     @DisplayName("Clear All Potion Effects")
@@ -314,7 +314,7 @@ enum class GameMode(override val key: String) : KeyedCycle {
     Creative("Creative");
 
     companion object {
-        fun fromKey(key: String): GameMode? = entries.find { it.key == key }
+        fun fromKey(key: String): GameMode? = entries.find { it.key.equals(key, true) }
     }
 }
 
@@ -353,7 +353,7 @@ enum class Weather(override val key: String) : KeyedCycle {
     RAINY("Rainy");
 
     companion object {
-        fun fromKey(key: String): Weather? = entries.find { it.key == key }
+        fun fromKey(key: String): Weather? = entries.find { it.key.equals(key, true) }
     }
 }
 

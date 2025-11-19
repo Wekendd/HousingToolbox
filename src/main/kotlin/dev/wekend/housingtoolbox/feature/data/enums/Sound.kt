@@ -197,6 +197,6 @@ enum class Sound(override val label: String, override val key: String) : KeyedLa
     VillagerYes("Villager Yes", "mob.villager.yes");
 
     companion object {
-        fun fromKey(key: String): Sound? = entries.find { it.key == key || it.label == key }
+        fun fromKey(key: String): Sound? = entries.find { it.key.equals(key, true) || it.label.equals(key, true) }
     }
 }

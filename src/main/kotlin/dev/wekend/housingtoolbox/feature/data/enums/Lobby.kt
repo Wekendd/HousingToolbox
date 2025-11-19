@@ -25,6 +25,6 @@ enum class Lobby(override val key: String) : Keyed {
     WoolWars("Wool Wars");
 
     companion object {
-        fun fromKey(key: String): Lobby? = entries.find { it.key == key }
+        fun fromKey(key: String): Lobby? = entries.find { it.key.equals(key, true) }
     }
 }

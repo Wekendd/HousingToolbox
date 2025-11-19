@@ -28,6 +28,6 @@ enum class Enchantment(override val key: String) : Keyed {
     Infinity("Infinity");
 
     companion object {
-        fun fromKey(key: String): Enchantment? = entries.find { it.key == key }
+        fun fromKey(key: String): Enchantment? = entries.find { it.key.equals(key, true) }
     }
 }

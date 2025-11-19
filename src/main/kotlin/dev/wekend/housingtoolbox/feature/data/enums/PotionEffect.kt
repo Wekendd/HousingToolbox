@@ -27,6 +27,6 @@ enum class PotionEffect(override val key: String) : Keyed {
     Absorption("Absorption");
 
     companion object {
-        fun fromKey(key: String): PotionEffect? = entries.find { it.key == key }
+        fun fromKey(key: String): PotionEffect? = entries.find { it.key.equals(key, true) }
     }
 }

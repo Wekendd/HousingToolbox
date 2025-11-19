@@ -54,6 +54,6 @@ enum class Permission(override val key: String) : Keyed {
     ItemBiomeStick("Item: Biome Stick");
 
     companion object {
-        fun fromKey(key: String): Permission? = entries.find { it.key == key }
+        fun fromKey(key: String): Permission? = entries.find { it.key.equals(key, true) }
     }
 }
