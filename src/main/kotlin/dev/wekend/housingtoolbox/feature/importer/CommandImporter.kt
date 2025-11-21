@@ -133,11 +133,7 @@ internal class CommandImporter(override var name: String) : Command {
     }
 
     override suspend fun delete() {
-        openCommandEditMenu()
-
-        MenuUtils.clickMenuSlot(MenuItems.DELETE_COMMAND)
-        MenuUtils.onOpen("Are you sure?")
-        MenuUtils.clickMenuSlot(MenuItems.CONFIRM)
+        CommandUtils.runCommand("command delete $name")
     }
 
     object MenuItems {
@@ -145,9 +141,6 @@ internal class CommandImporter(override var name: String) : Command {
         val TOGGLE_COMMAND_MODE = MenuSlot(null, "Toggle Command Mode")
         val REQUIRED_GROUP_PRIORITY = MenuSlot(Items.FILLED_MAP, "Required Group Priority")
         val LISTED = MenuSlot(null, "Listed")
-        val DELETE_COMMAND = MenuSlot(Items.TNT, "Delete Command")
-        val BACK = MenuSlot(Items.ARROW, "Go Back")
-        val CONFIRM = MenuSlot(Items.GREEN_TERRACOTTA, "Confirm")
     }
 
     object LoreFilters {

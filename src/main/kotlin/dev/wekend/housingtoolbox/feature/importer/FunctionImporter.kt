@@ -143,21 +143,15 @@ internal class FunctionImporter(override var name: String) : Function {
     }
 
     override suspend fun delete() {
-        openFunctionEditMenu()
-
-        MenuUtils.clickMenuSlot(MenuItems.DELETE_FUNCTION)
-        MenuUtils.onOpen("Are you sure?")
-        MenuUtils.clickMenuSlot(MenuItems.CONFIRM)
+        CommandUtils.runCommand("function delete $name")
     }
 
     object MenuItems {
         val RENAME_FUNCTION = MenuSlot(Items.ANVIL, "Rename Function")
         val SET_DESCRIPTION = MenuSlot(Items.BOOK, "Edit Description")
         val EDIT_ICON = MenuSlot(null, "Edit Icon")
-        val DELETE_FUNCTION = MenuSlot(Items.TNT, "Delete Function")
         val AUTOMATIC_EXECUTION = MenuSlot(Items.COMPARATOR, "Automatic Execution")
         val BACK = MenuSlot(Items.ARROW, "Go Back")
-        val CONFIRM = MenuSlot(Items.GREEN_TERRACOTTA, "Confirm")
     }
 
     object LoreFilters {
