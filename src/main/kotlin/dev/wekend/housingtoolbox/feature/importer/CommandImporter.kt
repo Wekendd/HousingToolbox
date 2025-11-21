@@ -129,7 +129,8 @@ internal class CommandImporter(override var name: String) : Command {
     }
 
     override suspend fun setActions(newActions: List<Action>, optimized: Boolean) {
-        TODO("Not yet implemented")
+        openActionsEditMenu()
+        ActionInteraction("Actions: /\$name").addActions(newActions)
     }
 
     override suspend fun delete() {
