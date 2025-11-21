@@ -4,6 +4,8 @@ import com.github.shynixn.mccoroutine.fabric.launch
 import de.siphalor.amecs.api.KeyModifiers
 import dev.wekend.housingtoolbox.HousingToolbox
 import dev.wekend.housingtoolbox.feature.data.Action
+import dev.wekend.housingtoolbox.feature.data.Comparison
+import dev.wekend.housingtoolbox.feature.data.Condition
 import dev.wekend.housingtoolbox.feature.data.Location
 import dev.wekend.housingtoolbox.feature.data.StatOp
 import dev.wekend.housingtoolbox.feature.data.StatValue
@@ -67,9 +69,16 @@ object KeyNav {
                         HousingToolbox.launch {
                             println("test keybind pressed")
                             val importer = FunctionImporter("test")
-                            importer.addActions(mutableListOf(
+                            val actions = mutableListOf<Action>()
+                            actions.add(
                                 Action.Conditional(
-                                    mutableListOf(),
+                                    mutableListOf(
+                                        Condition.PlayerVariableRequirement(
+                                            "test",
+                                            Comparison.Eq,
+                                            StatValue.I32(10)
+                                        )
+                                    ),
                                     false,
                                     mutableListOf(
                                         Action.SendMessage("test")
@@ -83,7 +92,9 @@ object KeyNav {
                                         )
                                     )
                                 )
-                            ))
+                            )
+
+                            importer.addActions(actions)
                         }
                         true
                     }

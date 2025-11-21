@@ -1,21 +1,17 @@
 package dev.wekend.housingtoolbox.util
 
 import dev.wekend.housingtoolbox.HousingToolbox.MC
-import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
-import net.minecraft.client.MinecraftClient
+import kotlinx.coroutines.withTimeoutOrNull
+import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.item.Item
 import net.minecraft.item.Items
-import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket
 import net.minecraft.screen.slot.Slot
 import net.minecraft.screen.slot.SlotActionType
-import net.minecraft.screen.sync.ItemStackHash
-import java.util.concurrent.CompletableFuture
-import java.util.concurrent.TimeUnit
+import kotlin.reflect.KClass
 
 object MenuUtils {
 
@@ -67,26 +63,18 @@ object MenuUtils {
     var currentScreen: String? = null
     var attempts: Int = 0
 
-    suspend fun onOpen(name: String?): Boolean {
+    suspend fun onOpen(name: String?, vararg clazz: KClass<out Screen> = arrayOf(GenericContainerScreen::class)): Screen {
         attempts = 0
         waitingOn = name ?: "null"
         while (true) {
-            if (attempts++ >= 50) {
-                waitingOn = null
-                return false
-            }
-            val gui = MC.currentScreen as? GenericContainerScreen
-            currentScreen = gui?.title?.string ?: "null"
+            if (attempts++ >= 20) error("Failed to open $name")
             delay(50)
-            if (gui == null && name == null) {
-                waitingOn = null
-                return true
+            val screen = MC.currentScreen ?: continue
+            currentScreen = screen.title.string
+            if (clazz.contains(screen::class) && (name == null || currentScreen?.contains(name) == true)) {
+                delay(50)
+                return screen
             }
-            if (gui != null && gui.title.string.contains(name ?: "null")) {
-                waitingOn = null
-                return true
-            }
-
         }
     }
 
@@ -144,7 +132,6 @@ object MenuUtils {
     fun clickPlayerSlot(slot: Int, button: Int = 0) =
         withContainer { gui ->
             val playerSlot = slot + gui.screenHandler.slots.size - 45
-            println("Clicking player slot: $playerSlot")
             click(gui, playerSlot, button)
             true
         }

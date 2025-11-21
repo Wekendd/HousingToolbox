@@ -7,6 +7,7 @@ import dev.wekend.housingtoolbox.feature.ChatInput
 import kotlinx.coroutines.delay
 import net.minecraft.block.entity.SignText
 import net.minecraft.client.MinecraftClient
+import net.minecraft.client.gui.screen.ChatScreen
 import net.minecraft.client.gui.screen.ingame.AnvilScreen
 import net.minecraft.network.packet.c2s.play.RenameItemC2SPacket
 import net.minecraft.screen.AnvilScreenHandler
@@ -69,14 +70,13 @@ object TextUtils {
     }
 
     suspend fun input(message: String) {
-        if (isAnvilInput(null)) {
-            val anvil = MC.currentScreen as AnvilScreen
-            if (anvil.screenHandler.setNewItemName(message)) {
+        val screen = MenuUtils.onOpen(null, AnvilScreen::class, ChatScreen::class)
+        if (screen is AnvilScreen) {
+            if (screen.screenHandler.setNewItemName(message)) {
                 MC.networkHandler?.sendPacket(RenameItemC2SPacket(message))
             }
-            MenuUtils.delayClick(anvil, 2, 0, 100L)
-        } else {
-            MenuUtils.onOpen(null)
+            MenuUtils.delayClick(screen, 2, 0, 100L)
+        } else if (screen is ChatScreen) {
             sendMessage(message)
         }
     }

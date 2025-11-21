@@ -18,6 +18,7 @@ sealed class Condition(
 ) {
     var inverted = false
 
+    @DisplayName("Required Group")
     data class RequiredGroup(
         @SerialName("required_group")
         val group: String,
@@ -25,40 +26,45 @@ sealed class Condition(
         val includeHigherGroups: Boolean,
     ) : Condition("IN_GROUP")
 
+
+    sealed class VariableRequirement protected constructor(
+        val holder: VariableHolder
+    ): Condition("VARIABLE_REQUIREMENT")
+
+    @DisplayName("Variable Requirement")
     data class PlayerVariableRequirement(
         val variable: String,
         val op: Comparison,
         val value: StatValue,
-    ) : Condition("VARIABLE_REQUIREMENT") {
-        val holder = VariableHolder.Player
-    }
+    ) : VariableRequirement(VariableHolder.Player)
 
+    @DisplayName("Variable Requirement")
     data class TeamVariableRequirement(
         val team: String?,
         val variable: String,
         val op: Comparison,
         val value: StatValue,
-    ) : Condition("VARIABLE_REQUIREMENT") {
-        val holder = VariableHolder.Team
-    }
+    ) : VariableRequirement(VariableHolder.Team)
 
+    @DisplayName("Variable Requirement")
     data class GlobalVariableRequirement(
         val variable: String,
         val op: Comparison,
         val value: StatValue,
-    ) : Condition("VARIABLE_REQUIREMENT") {
-        val holder = VariableHolder.Global
-    }
+    ) : VariableRequirement(VariableHolder.Global)
 
+    @DisplayName("Required Permission")
     data class HasPermission(
         @SerialName("required_permission")
         val permission: Permission,
     ) : Condition("HAS_PERMISSION")
 
+    @DisplayName("Within Region")
     data class InRegion(
         val region: String,
     ) : Condition("IN_REGION")
 
+    @DisplayName("Has Item")
     data class HasItem(
         val item: ItemStack,
         @SerialName("what_to_check") val whatToCheck: ItemCheck,
@@ -66,73 +72,90 @@ sealed class Condition(
         @SerialName("required_amount") val amount: ItemAmount,
     ) : Condition("HAS_ITEM")
 
+    @DisplayName("Doing Region")
     data object InParkour : Condition("IN_PARKOUR")
 
+    @DisplayName("Has Potion Effect")
     data class RequiredEffect(
         val effect: PotionEffect,
     ) : Condition("POTION_EFFECT")
 
+    @DisplayName("Player Sneaking")
     data object PlayerSneaking : Condition("SNEAKING")
 
+    @DisplayName("Player Flying")
     data object PlayerFlying : Condition("FLYING")
 
+    @DisplayName("Player Health")
     data class RequiredHealth(
         val mode: Comparison,
         val amount: StatValue,
     ) : Condition("HEALTH")
 
+    @DisplayName("Max Player Health")
     data class RequiredMaxHealth(
         val mode: Comparison,
         val amount: StatValue,
     ) : Condition("MAX_HEALTH")
 
+    @DisplayName("Player Hunger")
     data class RequiredHungerLevel(
         val mode: Comparison,
         val amount: StatValue,
     ) : Condition("HUNGER_LEVEL")
 
+    @DisplayName("Required Gamemode")
     data class RequiredGameMode(
         @SerialName("required_gamemode")
         val gameMode: GameMode
     ) : Condition("GAMEMODE")
 
+    @DisplayName("Placeholder Number Requirement")
     data class RequiredPlaceholderNumber(
         val placeholder: String,
         val mode: Comparison,
         val amount: StatValue,
     ) : Condition("PLACEHOLDER_NUMBER")
 
+    @DisplayName("Required Team")
     data class RequiredTeam(
         @SerialName("required_team")
         val team: String,
     ) : Condition("IN_TEAM")
 
+    @DisplayName("Pvp Enabled")
     data object PvpEnabled : Condition("PVP_ENABLED")
 
+    @DisplayName("Fishing Environment")
     data class FishingEnvironment(
         val environment: dev.wekend.housingtoolbox.feature.data.FishingEnvironment
     ) : Condition("FISHING_ENVIRONMENT")
 
+    @DisplayName("Portal Type")
     data class PortalType(
         @SerialName("portal_type")
         val type: dev.wekend.housingtoolbox.feature.data.PortalType
     ) : Condition("PORTAL_TYPE")
 
+    @DisplayName("Damage Cause")
     data class DamageCause(
         val cause: dev.wekend.housingtoolbox.feature.data.DamageCause
     ) : Condition("DAMAGE_CAUSE")
 
+    @DisplayName("Damage Amount")
     data class RequiredDamageAmount(
         val mode: Comparison,
         val amount: StatValue,
     ) : Condition("DAMAGE_AMOUNT")
 
+    @DisplayName("Block Type")
     data class BlockType(
         val item: ItemStack,
         @SerialName("match_type_only")
         val matchTypeOnly: Boolean,
     ) : Condition("BLOCK_TYPE")
 
+    @DisplayName("Is Item")
     data class IsItem(
         val item: ItemStack,
         @SerialName("what_to_check") val whatToCheck: ItemCheck,

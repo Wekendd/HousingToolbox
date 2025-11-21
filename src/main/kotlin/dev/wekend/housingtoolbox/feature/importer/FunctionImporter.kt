@@ -138,7 +138,7 @@ internal class FunctionImporter(override var name: String) : Function {
     }
 
     override suspend fun addActions(newActions: List<Action>) {
-        CommandUtils.runCommand("function edit $name")
+        if (!isActionsMenuOpen()) CommandUtils.runCommand("function edit $name")
         ActionImporter("Actions: $name").addActions(newActions)
     }
 

@@ -2,6 +2,7 @@ package dev.wekend.housingtoolbox.feature.importer
 
 import dev.wekend.housingtoolbox.HousingToolbox.MC
 import dev.wekend.housingtoolbox.feature.data.Action
+import dev.wekend.housingtoolbox.feature.data.Condition
 import dev.wekend.housingtoolbox.feature.data.CustomKey
 import dev.wekend.housingtoolbox.feature.data.DisplayName
 import dev.wekend.housingtoolbox.feature.data.Keyed
@@ -69,7 +70,6 @@ class ActionImporter(val title: String) {
                 properties.add(0, actionProperties.find { it.name == "holder" } ?: continue)
             }
 
-            println(properties.map { it.name })
 
             //Iterate through parameters
             for ((index, property) in properties.withIndex()) {
@@ -85,7 +85,6 @@ class ActionImporter(val title: String) {
                 val slot = gui.screenHandler.getSlot(slotIndex)
 
                 //All other properties
-                println(property.returnType.classifier)
                 when (property.returnType.classifier) {
                     String::class, Int::class, Double::class -> {
                         MenuUtils.clickMenuSlot(MenuSlot(null, null, slotIndex))
@@ -116,6 +115,13 @@ class ActionImporter(val title: String) {
                             ActionImporter("Edit Actions").addActions(value as List<Action>)
                             MenuUtils.onOpen("Edit Actions")
                             MenuUtils.clickMenuSlot(MenuItems.BACK)
+                            MenuUtils.onOpen("Action Settings")
+                        } else if (value.first() is Condition) {
+                            MenuUtils.clickMenuSlot(MenuSlot(null, null, slotIndex))
+                            ConditionImporter.addConditions(value as List<Condition>)
+                            MenuUtils.onOpen("Edit Conditions")
+                            MenuUtils.clickMenuSlot(MenuItems.BACK)
+                            MenuUtils.onOpen("Action Settings")
                         }
                     }
 
@@ -183,6 +189,7 @@ class ActionImporter(val title: String) {
             //Make sure we are in the action settings menu before we go back to actions to add another one
             MenuUtils.onOpen("Action Settings")
             MenuUtils.clickMenuSlot(MenuItems.BACK)
+            MenuUtils.onOpen(title)
         }
     }
 

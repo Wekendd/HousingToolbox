@@ -6,6 +6,7 @@ plugins {
 
 version = "${property("mod.version")}+${stonecutter.current.version}"
 base.archivesName = property("mod.id") as String
+group = "dev.wekend"
 
 repositories {
 
@@ -69,6 +70,18 @@ java {
     val javaVersion: JavaVersion = JavaVersion.VERSION_21
     targetCompatibility = javaVersion
     sourceCompatibility = javaVersion
+}
+
+publishing {
+
+    publications {
+        create<MavenPublication>("mavenJava") {
+            from(components["java"])
+            groupId = project.group.toString()
+            artifactId = "HousingToolbox"
+            version = project.version.toString()
+        }
+    }
 }
 
 tasks {

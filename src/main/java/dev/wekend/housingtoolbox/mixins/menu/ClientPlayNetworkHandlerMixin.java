@@ -26,9 +26,8 @@ public abstract class ClientPlayNetworkHandlerMixin {
 
     @Inject(method = "onCommandSuggestions", at = @At("HEAD"))
     private void onCommandSuggestions(CommandSuggestionsS2CPacket packet, CallbackInfo ci) {
-        int id = packet.id();
         Suggestions suggestions = packet.getSuggestions();
-        CommandUtils.INSTANCE.handleSuggestions(id, suggestions);
+        CommandUtils.INSTANCE.handleSuggestions(suggestions);
     }
 
 }

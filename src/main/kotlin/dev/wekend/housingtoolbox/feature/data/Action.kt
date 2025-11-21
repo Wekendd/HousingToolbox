@@ -99,7 +99,7 @@ sealed class Action(
     @DisplayName("Send to Lobby")
     data class SendToLobby(val location: Lobby) : Action("SEND_TO_LOBBY")
 
-    sealed class ChangeVariable(
+    sealed class ChangeVariable protected constructor(
         val holder: VariableHolder
     ): Action("CHANGE_VARIABLE")
 
@@ -131,7 +131,7 @@ sealed class Action(
     @DisplayName("Teleport Player")
     data class TeleportPlayer(
         val location: Location,
-        val preventInsideBlocks: Boolean,
+        val preventInsideBlocks: Boolean = false,
     ) : Action("TELEPORT_PLAYER")
 
     @DisplayName("Fail Parkour")
