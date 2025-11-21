@@ -9,13 +9,11 @@ import dev.wekend.housingtoolbox.feature.data.Keyed
 import dev.wekend.housingtoolbox.feature.data.KeyedCycle
 import dev.wekend.housingtoolbox.feature.data.StatOp
 import dev.wekend.housingtoolbox.feature.data.StatValue
-import dev.wekend.housingtoolbox.feature.data.VariableHolder
 import dev.wekend.housingtoolbox.util.ItemUtils.loreLine
 import dev.wekend.housingtoolbox.util.MenuUtils
 import dev.wekend.housingtoolbox.util.MenuUtils.MenuSlot
 import dev.wekend.housingtoolbox.util.MenuUtils.Target
 import dev.wekend.housingtoolbox.util.TextUtils
-import kotlinx.coroutines.delay
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen
 import net.minecraft.item.Items
 import kotlin.math.abs
@@ -26,7 +24,7 @@ import kotlin.reflect.full.primaryConstructor
 import kotlin.reflect.full.starProjectedType
 
 //The title of the actions gui, either Actions: <name> or Edit Actions
-class ActionImporter(val title: String) {
+class ActionInteraction(val title: String) {
     companion object {
         private val slots = mapOf(
             0 to 10,
@@ -112,13 +110,13 @@ class ActionImporter(val title: String) {
                         //Then we assume they all are actions
                         if (value.first() is Action) {
                             MenuUtils.clickMenuSlot(MenuSlot(null, null, slotIndex))
-                            ActionImporter("Edit Actions").addActions(value as List<Action>)
+                            ActionInteraction("Edit Actions").addActions(value as List<Action>)
                             MenuUtils.onOpen("Edit Actions")
                             MenuUtils.clickMenuSlot(MenuItems.BACK)
                             MenuUtils.onOpen("Action Settings")
                         } else if (value.first() is Condition) {
                             MenuUtils.clickMenuSlot(MenuSlot(null, null, slotIndex))
-                            ConditionImporter.addConditions(value as List<Condition>)
+                            ConditionInteraction.addConditions(value as List<Condition>)
                             MenuUtils.onOpen("Edit Conditions")
                             MenuUtils.clickMenuSlot(MenuItems.BACK)
                             MenuUtils.onOpen("Action Settings")

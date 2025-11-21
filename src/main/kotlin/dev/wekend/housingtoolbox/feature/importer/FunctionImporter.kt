@@ -139,7 +139,7 @@ internal class FunctionImporter(override var name: String) : Function {
 
     override suspend fun addActions(newActions: List<Action>) {
         if (!isActionsMenuOpen()) CommandUtils.runCommand("function edit $name")
-        ActionImporter("Actions: $name").addActions(newActions)
+        ActionInteraction("Actions: $name").addActions(newActions)
     }
 
     override suspend fun delete() {
