@@ -1,16 +1,18 @@
 package dev.wekend.housingtoolbox.util
 
 import dev.wekend.housingtoolbox.HousingToolbox.MC
+import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.withTimeoutOrNull
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.screen.ingame.GenericContainerScreen
 import net.minecraft.client.gui.screen.ingame.HandledScreen
 import net.minecraft.component.DataComponentTypes
 import net.minecraft.item.Item
 import net.minecraft.item.Items
+import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket
 import net.minecraft.screen.slot.Slot
 import net.minecraft.screen.slot.SlotActionType
+import net.minecraft.screen.sync.ItemStackHash
 import kotlin.reflect.KClass
 
 object MenuUtils {
@@ -49,7 +51,21 @@ object MenuUtils {
         }
     }
 
-    fun click(gui: HandledScreen<*>, slot: Int, button: Int = 0) {
+    fun packetClick(gui: HandledScreen<*>, slot: Int, button: Int = 0) {
+        val pkt = ClickSlotC2SPacket(
+            gui.screenHandler.syncId,
+            gui.screenHandler.revision,
+            slot.toShort(),
+            button.toByte(),
+            SlotActionType.PICKUP,
+            Int2ObjectOpenHashMap(),
+            ItemStackHash.EMPTY
+        )
+
+        MC.networkHandler?.sendPacket(pkt)
+    }
+
+    fun interactionClick(gui: HandledScreen<*>, slot: Int, button: Int = 0) {
         MC.interactionManager?.clickSlot(
             gui.screenHandler.syncId,
             slot,
@@ -78,20 +94,6 @@ object MenuUtils {
         }
     }
 
-    suspend fun delayClick(gui: HandledScreen<*>, slot: Int, button: Int, delayMs: Long) {
-        delay(delayMs)
-        click(gui, slot, button)
-    }
-
-    suspend fun clickMenuSlotWithDelay(delayMs: Long, vararg slots: MenuSlot) {
-        if (delayMs == 0L) {
-            clickMenuSlot(*slots)
-        } else {
-            delay(delayMs)
-            clickMenuSlot(*slots)
-        }
-    }
-
     fun clickMenuSlot(vararg slots: MenuSlot): Boolean =
         clickMenuTargets(*slots.map { Target(it) }.toTypedArray())
 
@@ -101,7 +103,7 @@ object MenuUtils {
                 val slot = findSlot(gui, it.menuSlot)
                 if (slot != null) it to slot else null
             } ?: return@withContainer false
-            click(gui, match.second.id, match.first.button)
+            packetClick(gui, match.second.id, match.first.button)
             true
         }
 
@@ -123,7 +125,7 @@ object MenuUtils {
                 }
                 false
             } else {
-                click(gui, match.second.id, match.first.button)
+                packetClick(gui, match.second.id, match.first.button)
                 true
             }
         }
@@ -132,18 +134,9 @@ object MenuUtils {
     fun clickPlayerSlot(slot: Int, button: Int = 0) =
         withContainer { gui ->
             val playerSlot = slot + gui.screenHandler.slots.size - 45
-            click(gui, playerSlot, button)
+            packetClick(gui, playerSlot, button)
             true
         }
-
-    suspend fun clickPlayerSlotWithDelay(delayMs: Long, slot: Int, button: Int = 0) {
-        if (delayMs == 0L) {
-            clickPlayerSlot(slot, button)
-        } else {
-            delay(delayMs)
-            clickPlayerSlot(slot, button)
-        }
-    }
 
     object GlobalMenuItems {
         val NEXT_PAGE = MenuSlot(Items.ARROW, "Left-click for next page!")

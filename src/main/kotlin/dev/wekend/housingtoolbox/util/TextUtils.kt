@@ -4,6 +4,7 @@ import com.github.shynixn.mccoroutine.fabric.launch
 import dev.wekend.housingtoolbox.HousingToolbox
 import dev.wekend.housingtoolbox.HousingToolbox.MC
 import dev.wekend.housingtoolbox.feature.ChatInput
+import dev.wekend.housingtoolbox.util.MenuUtils.interactionClick
 import kotlinx.coroutines.delay
 import net.minecraft.block.entity.SignText
 import net.minecraft.client.MinecraftClient
@@ -75,7 +76,8 @@ object TextUtils {
             if (screen.screenHandler.setNewItemName(message)) {
                 MC.networkHandler?.sendPacket(RenameItemC2SPacket(message))
             }
-            MenuUtils.delayClick(screen, 2, 0, 100L)
+            delay(100)
+            interactionClick(screen, 2, 0)
         } else if (screen is ChatScreen) {
             sendMessage(message)
         }
