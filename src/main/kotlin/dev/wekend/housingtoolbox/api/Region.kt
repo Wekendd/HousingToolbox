@@ -14,6 +14,7 @@ interface Region {
 
     suspend fun teleportToRegion()
 
+    // Region must be selected to run this.
     suspend fun moveRegion()
 
     suspend fun getPvpSettings(): MutableMap<PvpSettings, Boolean>
