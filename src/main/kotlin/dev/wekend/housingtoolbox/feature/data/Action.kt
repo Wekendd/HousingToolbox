@@ -20,7 +20,7 @@ sealed class Action(
     @DisplayName("Conditional")
     data class Conditional(
         val conditions: List<Condition>,
-        val matchAnyCondition: Boolean,
+        val matchAnyCondition: Boolean = false,
         val ifActions: List<Action>,
         val elseActions: List<Action>,
     ) : Action("CONDITIONAL")
@@ -42,23 +42,23 @@ sealed class Action(
 
     @DisplayName("Display Title")
     data class DisplayTitle(
-        val title: String,
-        val subtitle: String,
-        val fadeIn: Int,
-        val stay: Int,
-        val fadeOut: Int,
+        val title: String = "Hello World!",
+        val subtitle: String = "",
+        val fadeIn: Int = 1,
+        val stay: Int = 5,
+        val fadeOut: In = 1,
     ) : Action("TITLE")
 
     @DisplayName("Display Action Bar")
-    data class DisplayActionBar(val message: String) : Action("ACTION_BAR")
+    data class DisplayActionBar(val message: String = "Hello World!") : Action("ACTION_BAR")
 
     @DisplayName("Reset Inventory")
     class ResetInventory : Action("RESET_INVENTORY")
 
     @DisplayName("Change Max Health")
     data class ChangeMaxHealth(
-        val op: StatOp,
-        val amount: StatValue,
+        val op: StatOp = StatOp.Set,
+        val amount: StatValue = StatValue.I32(20),
         val healOnChange: Boolean = true,
     ) : Action("CHANGE_MAX_HEALTH")
 
@@ -67,37 +67,37 @@ sealed class Action(
 
     @DisplayName("Give Item")
     data class GiveItem(
-        val item: ItemStack,
-        val allowMultiple: Boolean,
-        val inventorySlot: StatValue,
-        val replaceExistingItem: Boolean,
+        val item: ItemStack = null,
+        val allowMultiple: Boolean = false,
+        val inventorySlot: StatValue = StatValue.I32(-1),
+        val replaceExistingItem: Boolean = false,
     ) : Action("GIVE_ITEM")
 
     @DisplayName("Remove Item")
-    data class RemoveItem(val item: ItemStack) : Action("REMOVE_ITEM")
+    data class RemoveItem(val item: ItemStack = null) : Action("REMOVE_ITEM")
 
     @DisplayName("Send a Chat Message")
-    data class SendMessage(val message: String) : Action("SEND_MESSAGE")
+    data class SendMessage(val message: String = "Hello!") : Action("SEND_MESSAGE")
 
     @DisplayName("Apply Potion Effect")
     data class ApplyPotionEffect(
-        val effect: PotionEffect,
-        val duration: Int,
-        val level: Int,
+        val effect: PotionEffect = null,
+        val duration: Int = 60,
+        val level: Int = 1,
         @SerialName("override_existing_effects")
-        val override: Boolean,
+        val override: Boolean = false,
         @SerialName("show_potion_icon")
-        val showIcon: Boolean = false,
+        val showIcon: Boolean = true,
     ) : Action("POTION_EFFECT")
 
     @DisplayName("Clear All Potion Effects")
     class ClearAllPotionEffects : Action("CLEAR_EFFECTS")
 
     @DisplayName("Give Experience Levels")
-    data class GiveExperienceLevels(val levels: Int) : Action("GIVE_EXP_LEVELS")
+    data class GiveExperienceLevels(val levels: Int = 1) : Action("GIVE_EXP_LEVELS")
 
     @DisplayName("Send to Lobby")
-    data class SendToLobby(val location: Lobby) : Action("SEND_TO_LOBBY")
+    data class SendToLobby(val location: Lobby = null) : Action("SEND_TO_LOBBY")
 
     sealed class ChangeVariable protected constructor(
         val holder: VariableHolder
@@ -105,62 +105,62 @@ sealed class Action(
 
     @DisplayName("Change Variable")
     data class PlayerVariable(
-        val variable: String,
-        val op: StatOp,
-        val amount: StatValue,
+        val variable: String = "Kills",
+        val op: StatOp = StatOp.Inc,
+        val amount: StatValue = StatValue.I32(1),
         val unset: Boolean = false
     ) : ChangeVariable(VariableHolder.Player)
 
     @DisplayName("Change Variable")
     data class TeamVariable(
-        val teamName: String,
-        val variable: String,
-        val op: StatOp,
-        val amount: StatValue,
+        val teamName: String = "None",
+        val variable: String = "Kills",
+        val op: StatOp = StatOp.Inc,
+        val amount: StatValue = StatValue.I32(1),
         val unset: Boolean = false
     ) : ChangeVariable(VariableHolder.Team)
 
     @DisplayName("Change Variable")
     data class GlobalVariable(
-        val variable: String,
-        val op: StatOp,
-        val amount: StatValue,
+        val variable: String = "Kills",
+        val op: StatOp = StatOp.Inc,
+        val amount: StatValue = StatValue.I32(1),
         val unset: Boolean = false
     ) : ChangeVariable(VariableHolder.Global)
 
     @DisplayName("Teleport Player")
     data class TeleportPlayer(
-        val location: Location,
+        val location: Location = null,
         val preventInsideBlocks: Boolean = false,
     ) : Action("TELEPORT_PLAYER")
 
     @DisplayName("Fail Parkour")
-    data class FailParkour(val reason: String) : Action("FAIL_PARKOUR")
+    data class FailParkour(val reason: String = "Failed!") : Action("FAIL_PARKOUR")
 
     @DisplayName("Play Sound")
     data class PlaySound(
-        val sound: Sound,
-        val volume: Double,
-        val pitch: Double,
-        val location: Location,
+        val sound: Sound = null,
+        val volume: Double = 0.7,
+        val pitch: Double = 1.0,
+        val location: Location = null,
     ) : Action("PLAY_SOUND")
 
     @DisplayName("Set Compass Target")
-    data class SetCompassTarget(val location: Location) : Action("SET_COMPASS_TARGET")
+    data class SetCompassTarget(val location: Location = null) : Action("SET_COMPASS_TARGET")
 
     @DisplayName("Set Gamemode")
-    data class SetGameMode(val gamemode: GameMode) : Action("SET_GAMEMODE")
+    data class SetGameMode(val gamemode: GameMode = null) : Action("SET_GAMEMODE")
 
     @DisplayName("Change Health")
     data class ChangeHealth(
-        val op: StatOp,
-        val amount: StatValue,
+        val op: StatOp = StatOp.Set,
+        val amount: StatValue = StatValue.I32(20),
     ) : Action("CHANGE_HEALTH")
 
     @DisplayName("Change Hunger Level")
     data class ChangeHunger(
-        val op: StatOp,
-        val amount: StatValue,
+        val op: StatOp = StatOp.Set,
+        val amount: StatValue = StatValue.I32(20),
     ) : Action("CHANGE_HUNGER")
 
     @DisplayName("Use/Remove Held Item")
@@ -172,65 +172,65 @@ sealed class Action(
     ) : Action("RANDOM_ACTION")
 
     @DisplayName("Trigger Function")
-    data class ExecuteFunction(val name: String, val global: Boolean) : Action("TRIGGER_FUNCTION")
+    data class ExecuteFunction(val name: String = null, val global: Boolean = false) : Action("TRIGGER_FUNCTION")
 
     @DisplayName("Apply Inventory Layout")
-    data class ApplyInventoryLayout(val layout: String) : Action("APPLY_LAYOUT")
+    data class ApplyInventoryLayout(val layout: String = null) : Action("APPLY_LAYOUT")
 
     @DisplayName("Exit")
     class Exit : Action("EXIT")
     
     @DisplayName("Enchant Held Item")
     data class EnchantHeldItem(
-        val enchantment: Enchantment,
-        val level: Int,
+        val enchantment: Enchantment = null,
+        val level: Int = 1,
     ) : Action("ENCHANT_HELD_ITEM")
     
     @DisplayName("Pause Execution")
-    data class PauseExecution(val ticks: Int) : Action("PAUSE")
+    data class PauseExecution(val ticks: Int = 20) : Action("PAUSE")
 
     @DisplayName("Set Player Team")
-    data class SetPlayerTeam(val team: String) : Action("SET_PLAYER_TEAM")
+    data class SetPlayerTeam(val team: String = null) : Action("SET_PLAYER_TEAM")
 
     @DisplayName("Display Menu")
-    data class DisplayMenu(val menu: String) : Action("DISPLAY_MENU")
+    data class DisplayMenu(val menu: String = null) : Action("DISPLAY_MENU")
 
     @DisplayName("Close Menu")
     class CloseMenu : Action("CLOSE_MENU")
 
     @DisplayName("Drop Item")
     data class DropItem(
-        val item: ItemStack,
-        val location: Location,
-        val dropNaturally: Boolean,
-        val disableMerging: Boolean,
-        val prioritizePlayer: Boolean,
-        val inventoryFallback: Boolean,
-        val despawnDurationTicks: Int,
-        val pickupDelayTicks: Int,
+        val item: ItemStack = null,
+        val location: Location = null,
+        val dropNaturally: Boolean = true,
+        val disableMerging: Boolean = false,
+        val prioritizePlayer: Boolean = false,
+        val inventoryFallback: Boolean = false,
+        val despawnDurationTicks: Int = 6000,
+        val pickupDelayTicks: Int = 10,
     ) : Action("DROP_ITEM")
 
     @DisplayName("Change Velocity")
     data class ChangeVelocity(
-        val x: StatValue,
-        val y: StatValue,
-        val z: StatValue,
+        val x: StatValue = 10,
+        val y: StatValue = 10,
+        val z: StatValue = 10,
     ) : Action("CHANGE_VELOCITY")
 
     @DisplayName("Launch to Target")
     data class LaunchToTarget(
-        val location: Location,
-        val strength: StatValue
+        val location: Location = null,
+        val strength: StatValue = StatValue.I32(2)
     ) : Action("LAUNCH_TO_TARGET")
 
     @DisplayName("Set Player Weather")
-    data class SetPlayerWeather(val weather: Weather) : Action("SET_PLAYER_WEATHER")
+    data class SetPlayerWeather(val weather: Weather = null) : Action("SET_PLAYER_WEATHER")
 
     @DisplayName("Set Player Time")
-    data class SetPlayerTime(val time: Time) : Action("SET_PLAYER_TIME")
+    data class SetPlayerTime(val time: Time = Time.ResetToWorldTime) : Action("SET_PLAYER_TIME")
 
     @DisplayName("Toggle Nametag Display")
-    data class ToggleNametagDisplay(val displayNametag: Boolean) :
+    data class ToggleNametagDisplay(val displayNametag: Boolean = true) :
         Action("TOGGLE_NAMETAG_DISPLAY")
 
     @DisplayName("Balance Player Team")

@@ -21,9 +21,9 @@ sealed class Condition(
     @DisplayName("Required Group")
     data class RequiredGroup(
         @SerialName("required_group")
-        val group: String,
+        val group: String = null,
         @SerialName("include_higher_groups")
-        val includeHigherGroups: Boolean,
+        val includeHigherGroups: Boolean = false,
     ) : Condition("IN_GROUP")
 
 
@@ -33,43 +33,43 @@ sealed class Condition(
 
     @DisplayName("Variable Requirement")
     data class PlayerVariableRequirement(
-        val variable: String,
-        val op: Comparison,
-        val value: StatValue,
+        val variable: String = "Kills",
+        val op: Comparison = Comparison.Eq,
+        val value: StatValue = null,
     ) : VariableRequirement(VariableHolder.Player)
 
     @DisplayName("Variable Requirement")
     data class TeamVariableRequirement(
-        val team: String?,
-        val variable: String,
-        val op: Comparison,
-        val value: StatValue,
+        val team: String? = null,
+        val variable: String = "Kills",
+        val op: Comparison = Comparison.Eq,
+        val value: StatValue = null,
     ) : VariableRequirement(VariableHolder.Team)
 
     @DisplayName("Variable Requirement")
     data class GlobalVariableRequirement(
-        val variable: String,
-        val op: Comparison,
-        val value: StatValue,
+        val variable: String = "Kills",
+        val op: Comparison = Comparison.Eq,
+        val value: StatValue = null,
     ) : VariableRequirement(VariableHolder.Global)
 
     @DisplayName("Required Permission")
     data class HasPermission(
         @SerialName("required_permission")
-        val permission: Permission,
+        val permission: Permission = null,
     ) : Condition("HAS_PERMISSION")
 
     @DisplayName("Within Region")
     data class InRegion(
-        val region: String,
+        val region: String = null,
     ) : Condition("IN_REGION")
 
     @DisplayName("Has Item")
     data class HasItem(
-        val item: ItemStack,
-        @SerialName("what_to_check") val whatToCheck: ItemCheck,
-        @SerialName("where_to_check") val whereToCheck: InventoryLocation,
-        @SerialName("required_amount") val amount: ItemAmount,
+        val item: ItemStack = null,
+        @SerialName("what_to_check") val whatToCheck: ItemCheck = ItemCheck.Metadata,
+        @SerialName("where_to_check") val whereToCheck: InventoryLocation = InventoryLocation.Anywhere,
+        @SerialName("required_amount") val amount: ItemAmount = ItemAmount.Any,
     ) : Condition("HAS_ITEM")
 
     @DisplayName("Doing Region")
@@ -77,7 +77,7 @@ sealed class Condition(
 
     @DisplayName("Has Potion Effect")
     data class RequiredEffect(
-        val effect: PotionEffect,
+        val effect: PotionEffect = null,
     ) : Condition("POTION_EFFECT")
 
     @DisplayName("Player Sneaking")
@@ -88,39 +88,39 @@ sealed class Condition(
 
     @DisplayName("Player Health")
     data class RequiredHealth(
-        val mode: Comparison,
-        val amount: StatValue,
+        val mode: Comparison = Comparison.Eq,
+        val amount: StatValue = null,
     ) : Condition("HEALTH")
 
     @DisplayName("Max Player Health")
     data class RequiredMaxHealth(
-        val mode: Comparison,
-        val amount: StatValue,
+        val mode: Comparison = Comparison.Eq,
+        val amount: StatValue = null,
     ) : Condition("MAX_HEALTH")
 
     @DisplayName("Player Hunger")
     data class RequiredHungerLevel(
-        val mode: Comparison,
-        val amount: StatValue,
+        val mode: Comparison = Comparison.Eq,
+        val amount: StatValue = null,
     ) : Condition("HUNGER_LEVEL")
 
     @DisplayName("Required Gamemode")
     data class RequiredGameMode(
         @SerialName("required_gamemode")
-        val gameMode: GameMode
+        val gameMode: GameMode = null
     ) : Condition("GAMEMODE")
 
     @DisplayName("Placeholder Number Requirement")
     data class RequiredPlaceholderNumber(
-        val placeholder: String,
-        val mode: Comparison,
-        val amount: StatValue,
+        val placeholder: String = null,
+        val mode: Comparison = Comparison.Eq,
+        val amount: StatValue = null,
     ) : Condition("PLACEHOLDER_NUMBER")
 
     @DisplayName("Required Team")
     data class RequiredTeam(
         @SerialName("required_team")
-        val team: String,
+        val team: String = null,
     ) : Condition("IN_TEAM")
 
     @DisplayName("Pvp Enabled")
@@ -128,39 +128,39 @@ sealed class Condition(
 
     @DisplayName("Fishing Environment")
     data class FishingEnvironment(
-        val environment: dev.wekend.housingtoolbox.feature.data.FishingEnvironment
+        val environment: dev.wekend.housingtoolbox.feature.data.FishingEnvironment = dev.wekend.housingtoolbox.feature.data.FishingEnvironment.Water
     ) : Condition("FISHING_ENVIRONMENT")
 
     @DisplayName("Portal Type")
     data class PortalType(
         @SerialName("portal_type")
-        val type: dev.wekend.housingtoolbox.feature.data.PortalType
+        val type: dev.wekend.housingtoolbox.feature.data.PortalType = dev.wekend.housingtoolbox.feature.data.PortalType.NetherPortal
     ) : Condition("PORTAL_TYPE")
 
     @DisplayName("Damage Cause")
     data class DamageCause(
-        val cause: dev.wekend.housingtoolbox.feature.data.DamageCause
+        val cause: dev.wekend.housingtoolbox.feature.data.DamageCause = null
     ) : Condition("DAMAGE_CAUSE")
 
     @DisplayName("Damage Amount")
     data class RequiredDamageAmount(
-        val mode: Comparison,
-        val amount: StatValue,
+        val mode: Comparison = Comparison.Eq,
+        val amount: StatValue = null,
     ) : Condition("DAMAGE_AMOUNT")
 
     @DisplayName("Block Type")
     data class BlockType(
-        val item: ItemStack,
+        val item: ItemStack = null,
         @SerialName("match_type_only")
-        val matchTypeOnly: Boolean,
+        val matchTypeOnly: Boolean = false,
     ) : Condition("BLOCK_TYPE")
 
     @DisplayName("Is Item")
     data class IsItem(
-        val item: ItemStack,
-        @SerialName("what_to_check") val whatToCheck: ItemCheck,
-        @SerialName("where_to_check") val whereToCheck: InventoryLocation,
-        @SerialName("required_amount") val amount: ItemAmount,
+        val item: ItemStack = null,
+        @SerialName("what_to_check") val whatToCheck: ItemCheck = ItemCheck.Metadata,
+        @SerialName("where_to_check") val whereToCheck: InventoryLocation = InventoryLocation.Anywhere,
+        @SerialName("required_amount") val amount: ItemAmount = ItemAmount.Any,
     ) : Condition("IS_ITEM")
 }
 
