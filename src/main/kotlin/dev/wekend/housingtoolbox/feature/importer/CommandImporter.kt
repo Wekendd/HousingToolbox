@@ -60,23 +60,30 @@ internal class CommandImporter(override var name: String) : Command {
     override suspend fun getCommandMode(): Command.CommandMode {
         openCommandEditMenu()
 
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return Command.CommandMode.TARGETED // FIXME
-        val slot = MenuUtils.findSlot(gui, MenuItems.TOGGLE_COMMAND_MODE) ?: return Command.CommandMode.TARGETED // FIXME
-        val loreLine = slot.stack.loreLine(1, false)
-        val part = loreLine.split(" ")[1]
+        val mode = (MC.currentScreen as? GenericContainerScreen)
+            ?.let { gui -> MenuUtils.findSlot(gui, MenuItems.TOGGLE_COMMAND_MODE) }
+            ?.stack
+            ?.loreLine(1, false)
+            ?.split(" ")
+            ?.getOrNull(1)
+            ?.let { value -> if (value == "Self") Command.CommandMode.SELF else Command.CommandMode.TARGETED }
+            ?: error("[Command $name] Failed to get required group priority.")
 
-        return if (part == "Self") Command.CommandMode.SELF else Command.CommandMode.TARGETED
+        return mode
     }
 
     override suspend fun setCommandMode(newCommandMode: Command.CommandMode) {
         openCommandEditMenu()
 
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return // FIXME: error
-        val slot = MenuUtils.findSlot(gui, MenuItems.TOGGLE_COMMAND_MODE) ?: return // FIXME: error
-        val loreLine = slot.stack.loreLine(1, false)
-        val part = loreLine.split(" ")[1]
-        val value = if (part == "Self") Command.CommandMode.SELF else Command.CommandMode.TARGETED
-        if (value == newCommandMode) return
+        val mode = (MC.currentScreen as? GenericContainerScreen)
+            ?.let { gui -> MenuUtils.findSlot(gui, MenuItems.TOGGLE_COMMAND_MODE) }
+            ?.stack
+            ?.loreLine(1, false)
+            ?.split(" ")
+            ?.getOrNull(1)
+            ?.let { value -> if (value == "Self") Command.CommandMode.SELF else Command.CommandMode.TARGETED }
+            ?: error("[Command $name] Failed to set required group priority to ${newCommandMode.name}.")
+        if (mode == newCommandMode) return
 
         MenuUtils.clickMenuSlot(MenuItems.TOGGLE_COMMAND_MODE)
     }
@@ -84,22 +91,30 @@ internal class CommandImporter(override var name: String) : Command {
     override suspend fun getRequiredGroupPriority(): Int {
         openCommandEditMenu()
 
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return 0 // FIXME
-        val slot = MenuUtils.findSlot(gui, MenuItems.REQUIRED_GROUP_PRIORITY) ?: return 0 // FIXME
-        val loreLine = slot.stack.loreLine(4, false)
-        val part = loreLine.split(" ")[1]
-        return part.toIntOrNull() ?: return 0 // FIXME
+        val priority = (MC.currentScreen as? GenericContainerScreen)
+            ?.let { gui -> MenuUtils.findSlot(gui, MenuItems.REQUIRED_GROUP_PRIORITY) }
+            ?.stack
+            ?.loreLine(4, false)
+            ?.split(" ")
+            ?.getOrNull(1)
+            ?.toIntOrNull()
+            ?: error("[Command $name] Failed to get required group priority.")
+
+        return priority
     }
 
     override suspend fun setRequiredGroupPriority(newPriority: Int) {
         openCommandEditMenu()
 
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return // FIXME
-        val slot = MenuUtils.findSlot(gui, MenuItems.REQUIRED_GROUP_PRIORITY) ?: return // FIXME
-        val loreLine = slot.stack.loreLine(4, false)
-        val part = loreLine.split(" ")[1]
-        val value = part.toIntOrNull() ?: 0 // FIXME
-        if (value == newPriority) return
+        val priority = (MC.currentScreen as? GenericContainerScreen)
+            ?.let { gui -> MenuUtils.findSlot(gui, MenuItems.REQUIRED_GROUP_PRIORITY) }
+            ?.stack
+            ?.loreLine(4, false)
+            ?.split(" ")
+            ?.getOrNull(1)
+            ?.toIntOrNull()
+            ?: error("[Command $name] Failed to set required group priority to $newPriority.")
+        if (priority == newPriority) return
 
         MenuUtils.clickMenuSlot(MenuItems.REQUIRED_GROUP_PRIORITY)
         TextUtils.input(newPriority.toString(), 100L)
@@ -108,18 +123,25 @@ internal class CommandImporter(override var name: String) : Command {
     override suspend fun getListed(): Boolean {
         openCommandEditMenu()
 
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return false // FIXME
-        val slot = MenuUtils.findSlot(gui, MenuItems.REQUIRED_GROUP_PRIORITY) ?: return false // FIXME
-        return slot.stack.item == Items.LIME_DYE
-    }
+        val listed = (MC.currentScreen as? GenericContainerScreen)
+            ?.let { gui -> MenuUtils.findSlot(gui, MenuItems.LISTED) }
+            ?.stack
+            ?.item
+            ?.let { item -> item == Items.LIME_DYE }
+            ?: error("[Command $name] Failed to get listed.")
 
+        return listed
+    }
     override suspend fun setListed(newListed: Boolean) {
         openCommandEditMenu()
 
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return // FIXME
-        val slot = MenuUtils.findSlot(gui, MenuItems.REQUIRED_GROUP_PRIORITY) ?: return // FIXME
-        val value = slot.stack.item == Items.LIME_DYE
-        if (value == newListed) return
+        val listed = (MC.currentScreen as? GenericContainerScreen)
+            ?.let { gui -> MenuUtils.findSlot(gui, MenuItems.LISTED) }
+            ?.stack
+            ?.item
+            ?.let { item -> item == Items.LIME_DYE }
+            ?: error("[Command $name] Failed to set listed to ${newListed}.")
+        if (listed == newListed) return
 
         MenuUtils.clickMenuSlot(MenuItems.LISTED)
     }
@@ -142,11 +164,5 @@ internal class CommandImporter(override var name: String) : Command {
         val TOGGLE_COMMAND_MODE = MenuSlot(null, "Toggle Command Mode")
         val REQUIRED_GROUP_PRIORITY = MenuSlot(Items.FILLED_MAP, "Required Group Priority")
         val LISTED = MenuSlot(null, "Listed")
-    }
-
-    object LoreFilters {
-        val RENAME_LORE_FILTER: (String) -> Boolean = { loreLine ->
-            !loreLine.contains("Click to rename!")
-        }
     }
 }

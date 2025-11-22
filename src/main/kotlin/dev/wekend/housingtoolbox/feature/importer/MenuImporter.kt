@@ -21,20 +21,21 @@ internal class MenuImporter(override var title: String) : Menu {
 
     private suspend fun openMenuEditMenu() {
         if (isMenuEditMenuOpen()) return
-        CommandUtils.runCommand("custommenu edit $title")
+        CommandUtils.runCommand("menu edit $title")
         MenuUtils.onOpen("Edit Menu: $title")
         delay(50)
     }
 
     override suspend fun createIfNotExists(): Boolean {
-        val menus = getTabCompletionData("custommenu edit")
+        val menus = getTabCompletionData("menu edit")
         if (menus.contains(title)) return false
 
-        CommandUtils.runCommand("custommenu create $title")
+        CommandUtils.runCommand("menu create $title")
         return true
     }
 
     override suspend fun setTitle(newTitle: String) {
+        if (newTitle.length !in 1..32) error(("[Menu $title] Invalid title '$newTitle'. must be between 1 and 32 characters long."))
         openMenuEditMenu()
         MenuUtils.clickMenuSlot(MenuItems.CHANGE_TITLE)
         TextUtils.input(newTitle, 100L)
@@ -45,10 +46,11 @@ internal class MenuImporter(override var title: String) : Menu {
         openMenuEditMenu()
         MenuUtils.clickMenuSlot(MenuItems.CHANGE_MENU_SIZE)
         val stack = (MC.currentScreen as GenericContainerScreen).screenHandler.inventory.first { stack -> stack.hasGlint() || stack.hasEnchantments() }
-        return Regex("""\d+""").find(stack.name.string)?.value?.toIntOrNull() ?: error("Couldn't find the size of menu $title")
+        return Regex("""\d+""").find(stack.name.string)?.value?.toIntOrNull() ?: error("[Menu $title] Couldn't find menu size.")
     }
 
     override suspend fun changeMenuSize(newSize: Int) {
+        if (newSize !in 1..6) error("[Menu \$title] Invalid size '$newSize'. Must be between 1 and 6.")
         openMenuEditMenu()
         MenuUtils.clickMenuSlot(MenuItems.CHANGE_MENU_SIZE)
         MenuUtils.clickMenuSlot(
@@ -66,7 +68,7 @@ internal class MenuImporter(override var title: String) : Menu {
     }
 
     override suspend fun delete() {
-        CommandUtils.runCommand("custommenu delete $title")
+        CommandUtils.runCommand("menu delete $title")
     }
 
     object MenuItems {

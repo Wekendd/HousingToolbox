@@ -50,6 +50,7 @@ internal class FunctionImporter(override var name: String) : Function {
     }
 
     override suspend fun setName(newName: String) {
+        if (newName.length !in 1..50) error(("[Function $name] Invalid title '$newName'. Must be between 1 and 50 characters long."))
         openFunctionEditMenu()
 
         MenuUtils.clickMenuSlot(MenuItems.RENAME_FUNCTION)
@@ -70,18 +71,25 @@ internal class FunctionImporter(override var name: String) : Function {
     override suspend fun getDescription(): String {
         openFunctionEditMenu()
 
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return "" // FIXME
-        val slot = MenuUtils.findSlot(gui, MenuItems.SET_DESCRIPTION) ?: return "" // FIXME
-        return slot.stack.loreLine(2, true, LoreFilters.RENAME_LORE_FILTER)
+        val description = (MC.currentScreen as? GenericContainerScreen)
+            ?.let { gui -> MenuUtils.findSlot(gui, MenuItems.SET_DESCRIPTION) }
+            ?.stack
+            ?.loreLine(2, false, LoreFilters.RENAME_LORE_FILTER)
+            ?: error("[Command $name] Failed to get description.")
+
+        return description
     }
 
     override suspend fun setDescription(newDescription: String) {
+        if (newDescription.length !in 1..120) error(("[Function $name] Invalid title '$newDescription'. Must be between 1 and 120 characters long."))
         openFunctionEditMenu()
 
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return // FIXME
-        val slot = MenuUtils.findSlot(gui, MenuItems.SET_DESCRIPTION) ?: return // FIXME
-        val value = slot.stack.loreLine(2, true, LoreFilters.RENAME_LORE_FILTER)
-        if (value == newDescription) return
+        val description = (MC.currentScreen as? GenericContainerScreen)
+            ?.let { gui -> MenuUtils.findSlot(gui, MenuItems.SET_DESCRIPTION) }
+            ?.stack
+            ?.loreLine(2, false, LoreFilters.RENAME_LORE_FILTER)
+            ?: error("[Command $name] Failed to set description to '$newDescription'.")
+        if (description == newDescription) return
 
         MenuUtils.clickMenuSlot(MenuItems.SET_DESCRIPTION)
         TextUtils.input(newDescription, 100L)
@@ -111,23 +119,31 @@ internal class FunctionImporter(override var name: String) : Function {
     override suspend fun getAutomaticExecution(): Int {
         openFunctionEditMenu()
 
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return 0 // FIXME
-        val slot = MenuUtils.findSlot(gui, MenuItems.AUTOMATIC_EXECUTION) ?: return 0 // FIXME
-        val loreLine = slot.stack.loreLine(5, false)
-        val part = loreLine.split(" ")[1]
+        val ticks = (MC.currentScreen as? GenericContainerScreen)
+            ?.let { gui -> MenuUtils.findSlot(gui, MenuItems.AUTOMATIC_EXECUTION) }
+            ?.stack
+            ?.loreLine(5, false)
+            ?.split(" ")
+            ?.getOrNull(1)
+            ?.let { value -> if (value == "Disabled") 0 else value.toIntOrNull() }
+            ?: error("[Function $name] Failed to get automatic execution.")
 
-        return if (part == "Disabled") 0 else part.toIntOrNull() ?: 0 // FIXME
+        return ticks
     }
 
     override suspend fun setAutomaticExecution(newAutomaticExecution: Int) {
+        if (newAutomaticExecution !in 0..18000) error(("[Function $name] Invalid automatic execution ticks '$newAutomaticExecution'. Must be between 1 and 18000."))
         openFunctionEditMenu()
 
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return // FIXME
-        val slot = MenuUtils.findSlot(gui, MenuItems.AUTOMATIC_EXECUTION) ?: return // FIXME
-        val loreLine = slot.stack.loreLine(5, false)
-        val part = loreLine.split(" ")[1]
-        val value = if (part == "Disabled") 0 else part.toIntOrNull() ?: 0 // FIXME
-        if (value == newAutomaticExecution) return
+        val ticks = (MC.currentScreen as? GenericContainerScreen)
+            ?.let { gui -> MenuUtils.findSlot(gui, MenuItems.AUTOMATIC_EXECUTION) }
+            ?.stack
+            ?.loreLine(5, false)
+            ?.split(" ")
+            ?.getOrNull(1)
+            ?.let { value -> if (value == "Disabled") 0 else value.toIntOrNull() }
+            ?: error("[Function $name] Failed to set automatic execution to '$newAutomaticExecution'.")
+        if (ticks == newAutomaticExecution) return
 
         MenuUtils.clickMenuSlot(MenuItems.AUTOMATIC_EXECUTION)
         TextUtils.input(newAutomaticExecution.toString(), 100L)

@@ -50,6 +50,7 @@ internal class RegionImporter(override var name: String) : Region {
     }
 
     override suspend fun setName(newName: String) {
+        if (newName.length !in 1..50) error(("[Region $name] Invalid title '$newName'. must be between 1 and 50 characters long."))
         openRegionEditMenu()
 
         MenuUtils.clickMenuSlot(MenuItems.RENAME_FUNCTION)
