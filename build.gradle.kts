@@ -9,7 +9,7 @@ base.archivesName = property("mod.id") as String
 group = "dev.wekend"
 
 repositories {
-
+    mavenLocal()
     /**
      * Restricts dependency search of the given [groups] to the [maven URL][url],
      * improving the setup speed.
@@ -44,6 +44,7 @@ dependencies {
     modImplementation("com.terraformersmc:modmenu:${property("deps.modmenu")}")
     modImplementation("dev.isxander:yet-another-config-lib:${property("deps.yacl")}")
     include(modImplementation("de.siphalor.amecs-api:amecs-api-mc${stonecutter.current.version}:${property("deps.amecs")}")!!)
+    include(modImplementation("llc.redstone:SystemAPI:0.0.1+1.21.9")!!)
 
     implementation("com.github.shynixn.mccoroutine:mccoroutine-fabric-api:2.22.0")
     implementation("com.github.shynixn.mccoroutine:mccoroutine-fabric-core:2.22.0")

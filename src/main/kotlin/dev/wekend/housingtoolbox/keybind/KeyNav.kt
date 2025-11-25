@@ -3,18 +3,9 @@ package dev.wekend.housingtoolbox.keybind
 import com.github.shynixn.mccoroutine.fabric.launch
 import de.siphalor.amecs.api.KeyModifiers
 import dev.wekend.housingtoolbox.HousingToolbox
-import dev.wekend.housingtoolbox.feature.data.Action
-import dev.wekend.housingtoolbox.feature.data.Comparison
-import dev.wekend.housingtoolbox.feature.data.Condition
-import dev.wekend.housingtoolbox.feature.data.Location
-import dev.wekend.housingtoolbox.feature.data.StatOp
-import dev.wekend.housingtoolbox.feature.data.StatValue
-import dev.wekend.housingtoolbox.feature.data.Time
-import dev.wekend.housingtoolbox.feature.data.enums.PotionEffect
-import dev.wekend.housingtoolbox.feature.importer.FunctionImporter
 import dev.wekend.housingtoolbox.keybind.KeyBindings.KeySpec
-import dev.wekend.housingtoolbox.util.MenuUtils
-import dev.wekend.housingtoolbox.util.MenuUtils.clickMenuTargets
+import llc.redstone.systemapi.util.MenuUtils
+import llc.redstone.systemapi.util.MenuUtils.clickMenuTargets
 import net.minecraft.client.MinecraftClient
 import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
@@ -59,44 +50,6 @@ object KeyNav {
                         } else {
                             false
                         }
-                    }
-                ),
-                KeySpec(
-                    id = "test",
-                    key = GLFW.GLFW_KEY_Z,
-                    modifiers = KeyModifiers(false, false, false),
-                    onPress = {
-                        HousingToolbox.launch {
-                            println("test keybind pressed")
-                            val importer = FunctionImporter("test")
-                            val actions = mutableListOf<Action>()
-                            actions.add(
-                                Action.Conditional(
-                                    mutableListOf(
-                                        Condition.PlayerVariableRequirement(
-                                            "test",
-                                            Comparison.Eq,
-                                            StatValue.I32(10)
-                                        )
-                                    ),
-                                    false,
-                                    mutableListOf(
-                                        Action.SendMessage("test")
-                                    ),
-                                    mutableListOf(
-                                        Action.ApplyPotionEffect(
-                                            PotionEffect.Poison,
-                                            61,
-                                            2,
-                                            override = false, showIcon = true
-                                        )
-                                    )
-                                )
-                            )
-
-                            importer.addActions(actions)
-                        }
-                        true
                     }
                 ),
                 KeySpec(
