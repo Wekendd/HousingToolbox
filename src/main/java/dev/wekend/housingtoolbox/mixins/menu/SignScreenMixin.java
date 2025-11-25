@@ -1,7 +1,7 @@
 package dev.wekend.housingtoolbox.mixins.menu;
 
 import dev.wekend.housingtoolbox.config.HousingToolboxSettings;
-import dev.wekend.housingtoolbox.util.TextUtils;
+import dev.wekend.housingtoolbox.utils.TextUtils;
 import net.minecraft.block.entity.SignText;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.ingame.AbstractSignEditScreen;

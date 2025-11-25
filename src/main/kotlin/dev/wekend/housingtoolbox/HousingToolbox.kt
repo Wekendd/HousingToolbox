@@ -1,7 +1,10 @@
 package dev.wekend.housingtoolbox
 
+import com.github.shynixn.mccoroutine.fabric.mcCoroutineConfiguration
 import dev.wekend.housingtoolbox.feature.ChatInput
 import dev.wekend.housingtoolbox.keybind.KeyBindings
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import net.fabricmc.api.ClientModInitializer
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents
 import net.minecraft.client.MinecraftClient
@@ -26,5 +29,7 @@ object HousingToolbox : ClientModInitializer {
         ClientReceiveMessageEvents.GAME.register { message, _ -> ChatInput.onGameMessage(message) }
 
         KeyBindings.init()
+
+        mcCoroutineConfiguration.minecraftExecutor = MinecraftClient.getInstance()
     }
 }

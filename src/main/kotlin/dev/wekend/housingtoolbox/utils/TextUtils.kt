@@ -1,4 +1,4 @@
-package dev.wekend.housingtoolbox.util
+package dev.wekend.housingtoolbox.utils
 
 import net.minecraft.block.entity.SignText
 

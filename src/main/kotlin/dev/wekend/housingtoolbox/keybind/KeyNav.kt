@@ -1,11 +1,17 @@
 package dev.wekend.housingtoolbox.keybind
 
+import com.github.shynixn.mccoroutine.fabric.launch
 import de.siphalor.amecs.api.KeyModifiers
+import dev.wekend.housingtoolbox.HousingToolbox
 import dev.wekend.housingtoolbox.keybind.KeyBindings.KeySpec
-import dev.wekend.housingtoolbox.util.MenuUtils
-import dev.wekend.housingtoolbox.util.MenuUtils.clickMenuTargets
+import llc.redstone.systemapi.util.MenuUtils
+import llc.redstone.systemapi.util.MenuUtils.clickMenuTargets
+import net.minecraft.client.MinecraftClient
+import net.minecraft.item.ItemStack
 import net.minecraft.item.Items
+import net.minecraft.nbt.NbtOps
 import org.lwjgl.glfw.GLFW
+import kotlin.jvm.optionals.getOrNull
 
 object KeyNav {
 
@@ -27,6 +33,23 @@ object KeyNav {
                             MenuUtils.Target(MenuItems.COPY, 0),
                             MenuUtils.Target(MenuItems.PASTE, 1)
                         )
+                    }
+                ),
+                KeySpec(
+                    id = "copyitemnbt",
+                    key = GLFW.GLFW_KEY_C,
+                    modifiers = KeyModifiers(false, true, true),
+                    onPress = {
+                        val stack = MinecraftClient.getInstance().player?.inventory?.selectedStack
+                        val result = ItemStack.CODEC.encodeStart(NbtOps.INSTANCE, stack).result().getOrNull()
+
+                        if (result != null) {
+                            val str = result.toString()
+                            MinecraftClient.getInstance().keyboard.setClipboard(str)
+                            true
+                        } else {
+                            false
+                        }
                     }
                 ),
                 KeySpec(
