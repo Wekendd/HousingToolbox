@@ -1,8 +1,21 @@
-# Housing Toolbox
+<h1 align="center">
+    <img src="src/main/resources/assets/housingtoolbox/icon.png" height="256" alt="SystemsAPI Icon">
+    <br>
+    Housing Toolbox
+    <br>
+    <a href="https://github.com/Wekendd/HousingToolbox/commits/main/">
+        <img alt="GitHub last commit" src="https://img.shields.io/github/last-commit/Wekendd/HousingToolbox?style=for-the-badge&logo=github&logoColor=%23cad3f5&labelColor=%23363a4f&color=%2340a02b">
+    </a>
+    <a href="https://discord.gg/pCcpqzU4He">
+        <img alt="By Redstone Studios" src="https://img.shields.io/badge/By-Redstone%20Studios-red?style=for-the-badge&labelColor=%23363a4f&color=%23e64553">
+    </a>
+</h1>
 
-A mod to improve the Hypixel Housing developer experience.
+## Overview
 
-## Current Features
+A simple mod meant to improve the Hypixel Housing developer experience in small but meaningful ways.
+
+## Features
 * Input Improvements
     * **Anvil:** Just press `enter` to confirm input!
     * **Signs:** Just press `enter` to confirm input! (Don't worry, doesn't apply to all signs)
@@ -10,7 +23,6 @@ A mod to improve the Hypixel Housing developer experience.
 * Keyboard Navigation in Systems
     * `CTRL+F`, `CTRL+C`, `CTRL+V`, and `CTRL+Z`! All rebindable!
     * Assign keys to turn pages, open system menus (Housing Menu, Functions, Events), and go back to your previous page without having to touch the mouse.
-* **(SOON!)** Full keyboard navigation: traverse entire menus without touching your mouse.
 
 Sensible defaults are set, so you won't be bombarded with random keybinds you didn't set.
 
