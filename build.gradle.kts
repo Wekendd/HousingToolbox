@@ -114,6 +114,7 @@ tasks {
             "minecraft" to project.property("mod.mc_compat"),
             "fabric_loader" to project.property("deps.fabric_loader"),
             "fabric_language_kotlin" to project.property("deps.fabric_language_kotlin"),
+            "fabric_api" to project.property("deps.fabric_api"),
             "yacl" to project.property("deps.yacl")
         )
 
