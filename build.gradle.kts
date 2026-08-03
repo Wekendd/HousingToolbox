@@ -21,9 +21,6 @@ val kotlinJvmTarget = requiredJava.majorVersion.let { javaVersion ->
     }
 }
 
-kotlin {
-    jvmToolchain(if (kotlinJvmTarget == "24") 24 else requiredJava.majorVersion.toInt())
-}
 
 repositories {
     /**
