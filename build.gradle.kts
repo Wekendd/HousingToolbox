@@ -14,8 +14,15 @@ val requiredJava: JavaVersion = when {
     else -> JavaVersion.VERSION_1_8
 }
 
+val kotlinJvmTarget = requiredJava.majorVersion.let { javaVersion ->
+    when {
+        javaVersion >= "25" -> "24"
+        else -> javaVersion
+    }
+}
+
 kotlin {
-    jvmToolchain(requiredJava.majorVersion.toInt())
+    jvmToolchain(if (kotlinJvmTarget == "24") 24 else requiredJava.majorVersion.toInt())
 }
 
 repositories {
@@ -97,7 +104,7 @@ java {
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
     compilerOptions {
-        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(requiredJava.majorVersion))
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(kotlinJvmTarget))
     }
 }
 
