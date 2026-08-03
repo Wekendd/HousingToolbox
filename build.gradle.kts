@@ -6,6 +6,18 @@ plugins {
 version = "${property("mod.version")}+${stonecutter.current.version}"
 base.archivesName = property("mod.id") as String
 
+val requiredJava: JavaVersion = when {
+    stonecutter.current.parsed >= "26.1" -> JavaVersion.VERSION_25
+    stonecutter.current.parsed >= "1.20.5" -> JavaVersion.VERSION_21
+    stonecutter.current.parsed >= "1.18" -> JavaVersion.VERSION_17
+    stonecutter.current.parsed >= "1.17" -> JavaVersion.VERSION_16
+    else -> JavaVersion.VERSION_1_8
+}
+
+kotlin {
+    jvmToolchain(requiredJava.majorVersion.toInt())
+}
+
 repositories {
     /**
      * Restricts dependency search of the given [groups] to the [maven URL][url],
@@ -79,9 +91,14 @@ loom {
 
 java {
     withSourcesJar()
-    val javaVersion: JavaVersion = JavaVersion.VERSION_25
-    targetCompatibility = javaVersion
-    sourceCompatibility = javaVersion
+    targetCompatibility = requiredJava
+    sourceCompatibility = requiredJava
+}
+
+tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.fromTarget(requiredJava.majorVersion))
+    }
 }
 
 tasks {
