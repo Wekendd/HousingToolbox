@@ -41,8 +41,8 @@ dependencies {
     modImplementation("net.fabricmc:fabric-language-kotlin:${property("deps.fabric_language_kotlin")}")
     modImplementation("com.terraformersmc:modmenu:${property("deps.mod_menu")}")
     modImplementation("dev.isxander:yet-another-config-lib:${property("deps.yacl")}")
-    modImplementation("de.siphalor.amecs.amecs-key-modifiers:${property("deps.amecs_key_modifiers")}")
-    modImplementation("de.siphalor.amecs.amecs-priority-key-mappings:${property("deps.amecs_priority_key_mappings")}")
+    include(modImplementation("de.siphalor.amecs.amecs-key-modifiers:${property("deps.amecs_key_modifiers")}")!!)
+    include(modImplementation("de.siphalor.amecs.amecs-priority-key-mappings:${property("deps.amecs_priority_key_mappings")}")!!)
 
     if (stonecutter.current.parsed >= "26.1") {
         fapi(
@@ -93,8 +93,6 @@ tasks {
             "minecraft" to project.property("mod.mc_compat"),
             "fabric_loader" to project.property("deps.fabric_loader"),
             "fabric_language_kotlin" to project.property("deps.fabric_language_kotlin"),
-            "amecs_key_modifiers" to project.property("deps.amecs_key_modifiers"),
-            "amecs_priority_key_mappings" to project.property("deps.amecs_priority_key_mappings"),
             "yacl" to project.property("deps.yacl")
         )
 
