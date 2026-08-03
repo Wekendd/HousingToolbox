@@ -3,7 +3,7 @@ package dev.wekend.housingtoolbox.config
 import dev.isxander.yacl3.config.v3.register
 import dev.isxander.yacl3.dsl.*
 import dev.wekend.housingtoolbox.HousingToolbox
-import net.minecraft.client.gui.screen.Screen
+import net.minecraft.client.gui.screens.Screen
 
 fun createSettingsGui(parent: Screen?) = SettingsGuiFactory().createSettingsGui(parent)
 

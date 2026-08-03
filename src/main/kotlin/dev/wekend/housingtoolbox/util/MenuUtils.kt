@@ -2,40 +2,39 @@ package dev.wekend.housingtoolbox.util
 
 import dev.wekend.housingtoolbox.HousingToolbox.MC
 import it.unimi.dsi.fastutil.ints.Int2ObjectOpenHashMap
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen
-import net.minecraft.component.DataComponentTypes
-import net.minecraft.item.Item
-import net.minecraft.network.packet.c2s.play.ClickSlotC2SPacket
-import net.minecraft.screen.slot.SlotActionType
-import net.minecraft.screen.sync.ItemStackHash
+import net.minecraft.client.gui.screens.inventory.ContainerScreen
+import net.minecraft.core.component.DataComponents
+import net.minecraft.network.HashedStack
+import net.minecraft.network.protocol.game.ServerboundContainerClickPacket
+import net.minecraft.world.item.Item
 
 object MenuUtils {
 
     data class Target(val menuSlot: MenuSlot, val button: Int = 0)
     data class MenuSlot(val item: Item, val label: String)
 
-    private inline fun withContainer(block: (GenericContainerScreen) -> Boolean): Boolean {
-        val gui = MC.currentScreen as? GenericContainerScreen ?: return false
+    private inline fun withContainer(block: (ContainerScreen) -> Boolean): Boolean {
+        val gui = MC.currentScreen as? ContainerScreen ?: return false
         return block(gui)
     }
 
-    private fun findSlot(gui: GenericContainerScreen, item: Item, name: String) =
-        gui.screenHandler.slots.firstOrNull {
-            it.stack.item == item &&
-            it.stack.components.get(DataComponentTypes.CUSTOM_NAME)?.string == name
+    private fun findSlot(gui: ContainerScreen, item: Item, name: String) =
+        gui.menu.slots.firstOrNull {
+            it.item.item == item &&
+            it.item.components.get(DataComponents.CUSTOM_NAME)?.string == name
         }
 
-    fun click(gui: GenericContainerScreen, slot: Int, button: Int = 0) {
-        val pkt = ClickSlotC2SPacket(
-            gui.screenHandler.syncId,
-            gui.screenHandler.revision,
+    fun click(gui: ContainerScreen, slot: Int, button: Int = 0) {
+        val pkt = ServerboundContainerClickPacket(
+            gui.menu.containerId,
+            gui.menu.stateId,
             slot.toShort(),
             button.toByte(),
-            SlotActionType.PICKUP,
+            ClickAction.PICKUP,
             Int2ObjectOpenHashMap(),
-            ItemStackHash.EMPTY
+            HashedStack.EMPTY
         )
-        MC.networkHandler?.sendPacket(pkt)
+        MC.connection?.send(pkt)
     }
 
 
@@ -48,7 +47,7 @@ object MenuUtils {
                 val slot = findSlot(gui, it.menuSlot.item, it.menuSlot.label)
                 if (slot != null) it to slot else null
             } ?: return@withContainer false
-            click(gui, match.second.id, match.first.button)
+            click(gui, match.second.index, match.first.button)
             true
         }
 }

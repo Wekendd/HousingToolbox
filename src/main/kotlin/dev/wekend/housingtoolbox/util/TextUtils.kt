@@ -1,6 +1,6 @@
 package dev.wekend.housingtoolbox.util
 
-import net.minecraft.block.entity.SignText
+import net.minecraft.world.level.block.entity.SignText
 
 
 object TextUtils {
@@ -11,7 +11,7 @@ object TextUtils {
 
     fun isInputSign(text: SignText): Boolean {
         val lines: List<String?> = text.getMessages(false).map { line ->
-            if (line.siblings.isEmpty()) null else line.siblings?.get(0)?.literalString
+            if (line.siblings.isEmpty()) null else line.siblings[0].tryCollapseToString()
         }.subList(1, 4)
 
         return VALID_SIGN_TEMPLATES.stream().anyMatch { o: List<String> -> lines == o }

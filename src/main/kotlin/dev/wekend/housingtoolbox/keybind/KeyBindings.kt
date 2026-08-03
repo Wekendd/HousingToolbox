@@ -1,13 +1,13 @@
 package dev.wekend.housingtoolbox.keybind
 
-import de.siphalor.amecs.api.AmecsKeyBinding
-import de.siphalor.amecs.api.KeyModifiers
-import de.siphalor.amecs.api.PriorityKeyBinding
 import dev.wekend.housingtoolbox.HousingToolbox.MOD_ID
-import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper
-import net.minecraft.client.option.KeyBinding
-import net.minecraft.client.util.InputUtil
-import net.minecraft.util.Identifier
+import net.minecraft.client.KeyMapping
+import com.mojang.blaze3d.platform.InputConstants
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyMappingWithKeyModifiers
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination
+import de.siphalor.amecs.priority_key_mappings.api.AmecsPriorityKeyMapping
+import dev.wekend.housingtoolbox.util.registerKeyMappingCompat
+import net.minecraft.resources.Identifier
 
 object KeyBindings {
 
@@ -16,26 +16,26 @@ object KeyBindings {
         KeyNav.init()
     }
 
-    val housingCategory = KeyBinding.Category.create(Identifier.of(MOD_ID, "housing"))
+    val housingCategory = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(MOD_ID, "housing"))
 
     data class KeySpec(
         val id: String,
-        val type: InputUtil.Type = InputUtil.Type.KEYSYM,
+        val type: InputConstants.Type = InputConstants.Type.KEYSYM,
         val key: Int,
-        val modifiers: KeyModifiers = KeyModifiers(),
+        val modifiers: AmecsKeyModifierCombination = AmecsKeyModifierCombination(),
         val onPress: () -> Boolean,
         val onRelease: () -> Boolean = { false }
     )
 
-    fun register(spec: KeySpec): KeyBinding {
-        return KeyBindingHelper.registerKeyBinding(
-            object : AmecsKeyBinding(
-                Identifier.of(MOD_ID, spec.id),
+    fun register(spec: KeySpec): KeyMapping {
+        return registerKeyMappingCompat(
+            object: AmecsKeyMappingWithKeyModifiers(
+                Identifier.fromNamespaceAndPath(MOD_ID, spec.id),
                 spec.type,
                 spec.key,
                 housingCategory,
                 spec.modifiers
-            ), PriorityKeyBinding {
+            ), AmecsPriorityKeyMapping {
                 override fun onPressedPriority() = spec.onPress()
                 override fun onReleasedPriority() = spec.onRelease()
             }

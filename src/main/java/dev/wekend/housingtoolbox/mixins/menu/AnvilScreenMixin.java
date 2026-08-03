@@ -1,50 +1,51 @@
 package dev.wekend.housingtoolbox.mixins.menu;
 
 import dev.wekend.housingtoolbox.config.HousingToolboxSettings;
-import net.minecraft.client.gui.screen.ingame.AnvilScreen;
-import net.minecraft.client.gui.screen.ingame.ForgingScreen;
-import net.minecraft.client.input.KeyInput;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.Items;
-import net.minecraft.screen.AnvilScreenHandler;
-import net.minecraft.screen.slot.SlotActionType;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import dev.wekend.housingtoolbox.util.CompatKt;
+import net.minecraft.client.gui.screens.inventory.AnvilScreen;
+import net.minecraft.client.gui.screens.inventory.ItemCombinerScreen;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
+import net.minecraft.world.entity.player.Inventory;
+import net.minecraft.world.inventory.AnvilMenu;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(AnvilScreen.class)
-public abstract class AnvilScreenMixin extends ForgingScreen<AnvilScreenHandler> {
+public abstract class AnvilScreenMixin extends ItemCombinerScreen<AnvilMenu> {
 
-    public AnvilScreenMixin(AnvilScreenHandler handler, PlayerInventory playerInventory, Text title, Identifier texture) {
-        super(handler, playerInventory, title, texture);
+    public AnvilScreenMixin(AnvilMenu menu, Inventory playerInventory, Component title, Identifier texture) {
+        super(menu, playerInventory, title, texture);
     }
 
     @Inject(method = "keyPressed", at = @At("HEAD"))
-    private void onEnterKeyPressed(KeyInput input, CallbackInfoReturnable<Boolean> cir) {
+    private void onEnterKeyPressed(KeyEvent keyEvent, CallbackInfoReturnable<Boolean> cir) {
         if (!HousingToolboxSettings.Companion.getAnvilEnterConfirm().get()) return;
-        if (!input.isEnter()) return;
+
+        int keyCode = keyEvent.key();
+
+        if (keyCode != GLFW.GLFW_KEY_ENTER && keyCode != GLFW.GLFW_KEY_KP_ENTER) return;
 
         if (!HousingToolboxSettings.Companion.getAnvilEnterConfirmGlobal().get()) {
-            ItemStack item = this.handler.getSlot(0).getStack();
-            if (item == null) return;
-
-            if (item.getItem() != Items.PAPER) return;
-            if (item.getName().getLiteralString() != null) return;
+            ItemStack item = this.menu.getSlot(0).getItem();
+            if (item.isEmpty()) return;
+            if (!item.is(Items.PAPER)) return;
         }
 
-        // Click output slot
-        if (client == null || client.interactionManager == null) return;
-        client.interactionManager.clickSlot(
-                this.handler.syncId,
+        if (this.minecraft.gameMode == null || this.minecraft.player == null) return;
+
+        CompatKt.performPickupClickCompat(
+                this.minecraft.gameMode,
+                this.menu.containerId,
                 2,
                 0,
-                SlotActionType.PICKUP,
-                client.player
+                this.minecraft.player
         );
     }
-
 }

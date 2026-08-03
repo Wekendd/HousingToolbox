@@ -1,7 +1,6 @@
 plugins {
     kotlin("jvm") version "2.2.10"
-    id("fabric-loom")
-    `maven-publish`
+    id("dev.kikugie.loom-back-compat")
 }
 
 version = "${property("mod.version")}+${stonecutter.current.version}"
@@ -35,18 +34,35 @@ dependencies {
     }
 
     minecraft("com.mojang:minecraft:${stonecutter.current.version}")
-    mappings("net.fabricmc:yarn:${property("deps.yarn")}:v2")
+    loomx.applyMojangMappings()
+
     modImplementation("net.fabricmc:fabric-loader:${property("deps.fabric_loader")}")
 
     modImplementation("net.fabricmc:fabric-language-kotlin:${property("deps.fabric_language_kotlin")}")
-    modImplementation("com.terraformersmc:modmenu:${property("deps.modmenu")}")
+    modImplementation("com.terraformersmc:modmenu:${property("deps.mod_menu")}")
     modImplementation("dev.isxander:yet-another-config-lib:${property("deps.yacl")}")
-    include(modImplementation("de.siphalor.amecs-api:amecs-api-mc${stonecutter.current.version}:${property("deps.amecs")}")!!)
+    modImplementation("de.siphalor.amecs.amecs-key-modifiers:${property("deps.amecs_key_modifiers")}")
+    modImplementation("de.siphalor.amecs.amecs-priority-key-mappings:${property("deps.amecs_priority_key_mappings")}")
 
+    if (stonecutter.current.parsed >= "26.1") {
+        fapi(
+            "fabric-lifecycle-events-v1",
+            "fabric-resource-loader-v0",
+            "fabric-content-registries-v0",
+            "fabric-message-api-v1",
+            "fabric-key-mapping-api-v1"
+        )
+    } else {
+        fapi(
+            "fabric-lifecycle-events-v1",
+            "fabric-resource-loader-v0",
+            "fabric-content-registries-v0",
+            "fabric-message-api-v1",
+            "fabric-key-binding-api-v1"
+        )
+    }
 
-    fapi("fabric-lifecycle-events-v1", "fabric-resource-loader-v0", "fabric-content-registries-v0")
-
-    modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.1")
+    modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.2")
 }
 
 loom {
@@ -63,7 +79,7 @@ loom {
 
 java {
     withSourcesJar()
-    val javaVersion: JavaVersion = JavaVersion.VERSION_21
+    val javaVersion: JavaVersion = JavaVersion.VERSION_25
     targetCompatibility = javaVersion
     sourceCompatibility = javaVersion
 }
@@ -74,7 +90,7 @@ tasks {
             "id" to project.property("mod.id"),
             "name" to project.property("mod.name"),
             "version" to project.property("mod.version"),
-            "minecraft" to project.property("mod.mc_dep"),
+            "minecraft" to project.property("mod.mc_compat"),
             "fabric_loader" to project.property("deps.fabric_loader"),
             "fabric_language_kotlin" to project.property("deps.fabric_language_kotlin"),
             "yacl" to project.property("deps.yacl")
@@ -86,8 +102,11 @@ tasks {
     // Builds the version into a shared folder in `build/libs/${mod version}/`
     register<Copy>("buildAndCollect") {
         group = "build"
-        from(remapJar.map { it.archiveFile }, remapSourcesJar.map { it.archiveFile })
+        description = "Builds mod jars and copies results to `build/libs/{mod version}/`"
+
+        inputs.property("version", project.property("mod.version"))
+        // loomx.mod(Sources)Jar returns the jar task for the applied loom variant
+        from(loomx.modJar.flatMap { it.archiveFile }, loomx.modSourcesJar.flatMap { it.archiveFile })
         into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
-        dependsOn("build")
     }
 }

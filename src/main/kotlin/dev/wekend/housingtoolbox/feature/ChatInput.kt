@@ -1,34 +1,35 @@
 package dev.wekend.housingtoolbox.feature
 
 import dev.wekend.housingtoolbox.config.HousingToolboxSettings
-import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
-import net.minecraft.client.MinecraftClient
-import net.minecraft.client.gui.screen.ChatScreen
-import net.minecraft.text.ClickEvent
-import net.minecraft.text.PlainTextContent
-import net.minecraft.text.Text
+import dev.wekend.housingtoolbox.util.currentScreen
+import dev.wekend.housingtoolbox.util.registerClientEndTick
+import net.minecraft.client.Minecraft
+import net.minecraft.client.gui.screens.ChatScreen
+import net.minecraft.network.chat.ClickEvent
+import net.minecraft.network.chat.contents.PlainTextContents
+import net.minecraft.network.chat.Component
 
 object ChatInput {
 
-    fun onGameMessage(message: Text) {
+    fun onGameMessage(message: Component) {
         if (!HousingToolboxSettings.chatAutoOpen.get()) return
 
         val inputRequested = message.siblings.firstOrNull { sibling ->
-            (sibling.content as? PlainTextContent.Literal)?.string() == " [CANCEL]"
+            (sibling.contents as? PlainTextContents.LiteralContents)?.text() == " [CANCEL]"
         } != null
         if (!inputRequested) return
 
         val prevInput = message.siblings.firstNotNullOfOrNull { sibling ->
-            if ((sibling.content as? PlainTextContent.Literal)?.string() == " [PREVIOUS]") {
+            if ((sibling.contents as? PlainTextContents.LiteralContents)?.text() == " [PREVIOUS]") {
                 (sibling.style.clickEvent as? ClickEvent.SuggestCommand)?.command
             } else null
         }
 
-        val client = MinecraftClient.getInstance()
+        val client = Minecraft.getInstance()
 
         // Ignore server's close screen packet for 2 ticks
         IgnoreCloseScreens.startIgnoring(2)
-        ClientTickEvents.END_WORLD_TICK.register { IgnoreCloseScreens.tick() }
+        registerClientEndTick { IgnoreCloseScreens.tick() }
 
         val chatScreen = if (HousingToolboxSettings.chatIncludePrevious.get() && prevInput != null) {
             ChatScreen(prevInput, true)
@@ -36,7 +37,7 @@ object ChatInput {
             ChatScreen("", false)
         }
 
-        client.setScreen(chatScreen)
+        client.currentScreen = chatScreen
     }
 
     object IgnoreCloseScreens {

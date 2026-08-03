@@ -1,10 +1,8 @@
 plugins {
     id("dev.kikugie.stonecutter")
-    id("fabric-loom") version "1.11-SNAPSHOT" apply false
-//    id("me.modmuss50.mod-publish-plugin") version "1.0.+" apply false // Publishes builds to hosting websites
 }
 
-stonecutter active "1.21.9"
+stonecutter active "26.2.x"
 
 /*
 // Make newer versions be published last
@@ -19,4 +17,14 @@ stonecutter parameters {
     swaps["minecraft"] = "\"" + node.metadata.version + "\";"
     constants["release"] = property("mod.id") != "housingtoolbox"
     dependencies["fapi"] = node.project.property("deps.fabric_api") as String
+
+    replacements {
+        string(current.parsed >= "1.21.11") {
+            replace("ResourceLocation", "Identifier")
+        }
+
+        string(current.parsed >= "26.1") {
+            replace("classTweaker v2 named", "classTweaker v2 official")
+        }
+    }
 }

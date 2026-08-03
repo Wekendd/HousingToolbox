@@ -2,15 +2,17 @@ package dev.wekend.housingtoolbox.keybind
 
 import dev.wekend.housingtoolbox.HousingToolbox.MC
 import dev.wekend.housingtoolbox.keybind.KeyBindings.KeySpec
-import net.minecraft.client.gui.screen.ingame.GenericContainerScreen
+import dev.wekend.housingtoolbox.util.currentScreen
+import net.minecraft.client.gui.screens.inventory.ContainerScreen
 import org.lwjgl.glfw.GLFW
 
 object CommandShortcuts {
 
-    private inline fun runIfNoScreenOrContainer(cmd: String): Boolean {
+    private fun runIfNoScreenOrContainer(cmd: String): Boolean {
         val s = MC.currentScreen
-        if (s == null || s is GenericContainerScreen) {
-            MC.networkHandler?.sendChatCommand(cmd)
+
+        if (s == null || s is ContainerScreen) {
+            MC.connection?.sendCommand(cmd)
             return true
         }
         return false

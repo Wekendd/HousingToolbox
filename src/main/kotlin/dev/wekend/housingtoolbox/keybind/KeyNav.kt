@@ -1,10 +1,11 @@
 package dev.wekend.housingtoolbox.keybind
 
-import de.siphalor.amecs.api.KeyModifiers
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination
+import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers
 import dev.wekend.housingtoolbox.keybind.KeyBindings.KeySpec
 import dev.wekend.housingtoolbox.util.MenuUtils
 import dev.wekend.housingtoolbox.util.MenuUtils.clickMenuTargets
-import net.minecraft.item.Items
+import net.minecraft.world.item.Items
 import org.lwjgl.glfw.GLFW
 
 object KeyNav {
@@ -15,13 +16,13 @@ object KeyNav {
                 KeySpec(
                     id = "search",
                     key = GLFW.GLFW_KEY_F,
-                    modifiers = KeyModifiers(false, true, false),
-                    onPress = { MenuUtils.clickMenuSlot(MenuItems.SEARCH, MenuItems.SEARCH, MenuItems.FILTER) }
+                    modifiers = AmecsKeyModifierCombination(AmecsKeyModifiers.CONTROL),
+                    onPress = { MenuUtils.clickMenuSlot(MenuItems.SEARCH, MenuItems.SEARCH2, MenuItems.FILTER) }
                 ),
                 KeySpec(
                     id = "copy",
                     key = GLFW.GLFW_KEY_C,
-                    modifiers = KeyModifiers(false, true, false),
+                    modifiers = AmecsKeyModifierCombination(AmecsKeyModifiers.CONTROL),
                     onPress = {
                         clickMenuTargets(
                             MenuUtils.Target(MenuItems.COPY, 0),
@@ -32,7 +33,7 @@ object KeyNav {
                 KeySpec(
                     id = "paste",
                     key = GLFW.GLFW_KEY_V,
-                    modifiers = KeyModifiers(false, true, false),
+                    modifiers = AmecsKeyModifierCombination(AmecsKeyModifiers.CONTROL),
                     onPress = {
                         clickMenuTargets(
                             MenuUtils.Target(MenuItems.PASTE, 0),
@@ -43,7 +44,7 @@ object KeyNav {
                 KeySpec(
                     id = "undo",
                     key = GLFW.GLFW_KEY_Z,
-                    modifiers = KeyModifiers(false, true, false),
+                    modifiers = AmecsKeyModifierCombination(AmecsKeyModifiers.CONTROL),
                     onPress = { MenuUtils.clickMenuSlot(MenuItems.UNDO) }
                 ),
                 KeySpec(
