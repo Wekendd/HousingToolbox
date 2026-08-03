@@ -93,6 +93,8 @@ tasks {
             "minecraft" to project.property("mod.mc_compat"),
             "fabric_loader" to project.property("deps.fabric_loader"),
             "fabric_language_kotlin" to project.property("deps.fabric_language_kotlin"),
+            "amecs_key_modifiers" to project.property("deps.amecs_key_modifiers"),
+            "amecs_priority_key_mappings" to project.property("deps.amecs_priority_key_mappings"),
             "yacl" to project.property("deps.yacl")
         )
 

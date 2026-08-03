@@ -40,7 +40,9 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: housingtoolbox-${{ matrix.version }}
-          path: build/libs/**/*.jar
+          path: |
+            build/libs/**/*.jar
+            !build/libs/**/*-sources.jar
           if-no-files-found: error
           retention-days: 7
 
@@ -60,8 +62,10 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ github.ref_name }}
-          name: ${{ github.ref_name }}
+          name: HousingToolbox ${{ github.ref_name }}
           generate_release_notes: true
-          files: release-artifacts/**/*.jar
+          files: |
+            release-artifacts/**/*.jar
+            !release-artifacts/**/*-sources.jar
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
