@@ -78,6 +78,7 @@ dependencies {
         )
     }
 
+    modRuntimeOnly("net.fabricmc.fabric-api:fabric-api:${property("deps.fabric_api")}")
     modRuntimeOnly("me.djtheredstoner:DevAuth-fabric:1.2.2")
 }
 
