@@ -1,5 +1,6 @@
 package dev.wekend.housingtoolbox.util
 
+import com.mojang.blaze3d.platform.InputConstants
 import net.minecraft.client.Minecraft
 import net.minecraft.client.gui.screens.Screen
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents
@@ -21,6 +22,16 @@ import net.minecraft.world.inventory.ClickType
 typealias ClickAction = ClickType
 *///?}
 
+// ==========================================
+// Key constant compat
+// ==========================================
+fun inputConstantKeyboardType(): InputConstants.Type {
+    //? if >=26.3 {
+    return InputConstants.Type.KEYBOARD
+    //?} else {
+    /*return InputConstants.Type.KEYSYM
+    *///?}
+}
 
 // ==========================================
 // Inventory Click Compat

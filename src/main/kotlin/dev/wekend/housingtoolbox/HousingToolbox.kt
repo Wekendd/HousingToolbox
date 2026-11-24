@@ -12,7 +12,7 @@ object HousingToolbox : ClientModInitializer {
     const val MOD_ID = "housingtoolbox"
     val LOGGER: Logger = LoggerFactory.getLogger("Housing Toolbox")
     const val VERSION = /*$ mod_version*/ "0.3.1";
-    const val MINECRAFT = /*$ minecraft*/ "26.2";
+    const val MINECRAFT = /*$ minecraft*/ "26.3";
     val MC: Minecraft
         get() = Minecraft.getInstance()
 

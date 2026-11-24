@@ -1,12 +1,12 @@
 package dev.wekend.housingtoolbox.keybind
 
+import com.mojang.blaze3d.platform.InputConstants
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifiers
 import dev.wekend.housingtoolbox.keybind.KeyBindings.KeySpec
 import dev.wekend.housingtoolbox.util.MenuUtils
 import dev.wekend.housingtoolbox.util.MenuUtils.clickMenuTargets
 import net.minecraft.world.item.Items
-import org.lwjgl.glfw.GLFW
 
 object KeyNav {
 
@@ -15,13 +15,13 @@ object KeyNav {
             listOf(
                 KeySpec(
                     id = "search",
-                    key = GLFW.GLFW_KEY_F,
+                    key = InputConstants.UNKNOWN.value,
                     modifiers = AmecsKeyModifierCombination(AmecsKeyModifiers.CONTROL),
                     onPress = { MenuUtils.clickMenuSlot(MenuItems.SEARCH, MenuItems.SEARCH2, MenuItems.FILTER) }
                 ),
                 KeySpec(
                     id = "copy",
-                    key = GLFW.GLFW_KEY_C,
+                    key = InputConstants.KEY_C,
                     modifiers = AmecsKeyModifierCombination(AmecsKeyModifiers.CONTROL),
                     onPress = {
                         clickMenuTargets(
@@ -32,7 +32,7 @@ object KeyNav {
                 ),
                 KeySpec(
                     id = "paste",
-                    key = GLFW.GLFW_KEY_V,
+                    key = InputConstants.KEY_V,
                     modifiers = AmecsKeyModifierCombination(AmecsKeyModifiers.CONTROL),
                     onPress = {
                         clickMenuTargets(
@@ -43,23 +43,23 @@ object KeyNav {
                 ),
                 KeySpec(
                     id = "undo",
-                    key = GLFW.GLFW_KEY_Z,
+                    key = InputConstants.KEY_Z,
                     modifiers = AmecsKeyModifierCombination(AmecsKeyModifiers.CONTROL),
                     onPress = { MenuUtils.clickMenuSlot(MenuItems.UNDO) }
                 ),
                 KeySpec(
                     id = "back",
-                    key = GLFW.GLFW_KEY_UNKNOWN,
+                    key = InputConstants.UNKNOWN.value,
                     onPress = { MenuUtils.clickMenuSlot(MenuItems.BACK, MenuItems.MAIN_MENU, MenuItems.CLOSE) }
                 ),
                 KeySpec(
                     id = "nextpage",
-                    key = GLFW.GLFW_KEY_UNKNOWN,
+                    key = InputConstants.UNKNOWN.value,
                     onPress = { MenuUtils.clickMenuSlot(MenuItems.NEXT_PAGE) }
                 ),
                 KeySpec(
                     id = "prevpage",
-                    key = GLFW.GLFW_KEY_UNKNOWN,
+                    key = InputConstants.UNKNOWN.value,
                     onPress = { MenuUtils.clickMenuSlot(MenuItems.PREV_PAGE) }
                 )
             )

@@ -1,10 +1,10 @@
 package dev.wekend.housingtoolbox.keybind
 
+import com.mojang.blaze3d.platform.InputConstants
 import dev.wekend.housingtoolbox.HousingToolbox.MC
 import dev.wekend.housingtoolbox.keybind.KeyBindings.KeySpec
 import dev.wekend.housingtoolbox.util.currentScreen
 import net.minecraft.client.gui.screens.inventory.ContainerScreen
-import org.lwjgl.glfw.GLFW
 
 object CommandShortcuts {
 
@@ -23,17 +23,17 @@ object CommandShortcuts {
             listOf(
                 KeySpec(
                     id = "menu",
-                    key = GLFW.GLFW_KEY_UNKNOWN,
+                    key = InputConstants.UNKNOWN.value,
                     onPress = { runIfNoScreenOrContainer("menu") }
                 ),
                 KeySpec(
                     id = "functions",
-                    key = GLFW.GLFW_KEY_UNKNOWN,
+                    key = InputConstants.UNKNOWN.value,
                     onPress = { runIfNoScreenOrContainer("functions") }
                 ),
                 KeySpec(
                     id = "events",
-                    key = GLFW.GLFW_KEY_UNKNOWN,
+                    key = InputConstants.UNKNOWN.value,
                     onPress = { runIfNoScreenOrContainer("events") }
                 )
             )

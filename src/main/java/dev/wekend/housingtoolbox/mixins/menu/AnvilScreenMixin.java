@@ -1,5 +1,6 @@
 package dev.wekend.housingtoolbox.mixins.menu;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import dev.wekend.housingtoolbox.config.HousingToolboxSettings;
 import dev.wekend.housingtoolbox.util.CompatKt;
 import net.minecraft.client.gui.screens.inventory.AnvilScreen;
@@ -11,7 +12,6 @@ import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.inventory.AnvilMenu;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
-import org.lwjgl.glfw.GLFW;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -30,7 +30,7 @@ public abstract class AnvilScreenMixin extends ItemCombinerScreen<AnvilMenu> {
 
         int keyCode = keyEvent.key();
 
-        if (keyCode != GLFW.GLFW_KEY_ENTER && keyCode != GLFW.GLFW_KEY_KP_ENTER) return;
+        if (keyCode != InputConstants.KEY_RETURN) return;
 
         if (!HousingToolboxSettings.Companion.getAnvilEnterConfirmGlobal().get()) {
             ItemStack item = this.menu.getSlot(0).getItem();

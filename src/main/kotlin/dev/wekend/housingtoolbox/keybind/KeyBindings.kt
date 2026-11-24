@@ -1,12 +1,13 @@
 package dev.wekend.housingtoolbox.keybind
 
-import dev.wekend.housingtoolbox.HousingToolbox.MOD_ID
-import net.minecraft.client.KeyMapping
 import com.mojang.blaze3d.platform.InputConstants
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyMappingWithKeyModifiers
 import de.siphalor.amecs.key_modifiers.api.AmecsKeyModifierCombination
 import de.siphalor.amecs.priority_key_mappings.api.AmecsPriorityKeyMapping
+import dev.wekend.housingtoolbox.HousingToolbox.MOD_ID
+import dev.wekend.housingtoolbox.util.inputConstantKeyboardType
 import dev.wekend.housingtoolbox.util.registerKeyMappingCompat
+import net.minecraft.client.KeyMapping
 import net.minecraft.resources.Identifier
 
 object KeyBindings {
@@ -20,7 +21,7 @@ object KeyBindings {
 
     data class KeySpec(
         val id: String,
-        val type: InputConstants.Type = InputConstants.Type.KEYSYM,
+        val type: InputConstants.Type = inputConstantKeyboardType(),
         val key: Int,
         val modifiers: AmecsKeyModifierCombination = AmecsKeyModifierCombination(),
         val onPress: () -> Boolean,
