@@ -19,6 +19,7 @@ jobs:
           - 1.21.11
           - 26.1.x
           - 26.2.x
+          - 26.3.x
 
     steps:
       - name: Check out repository
